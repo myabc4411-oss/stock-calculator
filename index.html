@@ -175,19 +175,6 @@
         .value.tax { color: var(--danger-color); }
         .value.profit { color: #059669; }
 
-        .alert-box {
-            background-color: #fffbeb;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 1rem;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            display: flex;
-            gap: 10px;
-            align-items: start;
-        }
-        
         .source-note {
             margin-top: 20px;
             font-size: 0.75rem;
@@ -291,24 +278,33 @@
                     <span class="unit">원</span>
                 </div>
             </div>
-            <div class="input-group full">
+            
+            <div class="input-group">
                 <label>초기 투자금</label>
                 <div class="input-wrapper">
-                    <input type="text" id="goalInitial" value="10,000,000" onkeyup="formatCurrency(this)">
+                    <input type="text" id="goalInitial" value="100,000,000" onkeyup="formatCurrency(this)">
                     <span class="unit">원</span>
                 </div>
             </div>
-            <div class="input-group full">
+            <div class="input-group">
+                <label>초기 투자금 기대 수익률(연)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="goalInitialReturn" value="10">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
                 <label>매월 적립금액</label>
                 <div class="input-wrapper">
                     <input type="text" id="goalMonthly" value="2,000,000" onkeyup="formatCurrency(this)">
                     <span class="unit">원</span>
                 </div>
             </div>
-            <div class="input-group full">
-                <label>기대 수익률 (연, 배당포함)</label>
+            <div class="input-group">
+                <label>매월 적립금 기대 수익률(연)</label>
                 <div class="input-wrapper">
-                    <input type="number" id="goalReturn" value="10">
+                    <input type="number" id="goalMonthlyReturn" value="6">
                     <span class="unit">%</span>
                 </div>
             </div>
@@ -320,6 +316,11 @@
                 <p class="label" style="margin-bottom: 10px;">목표 금액 달성까지 걸리는 시간</p>
                 <div id="goalResultTime" class="value final" style="font-size: 1.8rem; margin-bottom: 10px;">-</div>
                 <p class="label" id="goalResultText" style="font-size: 0.9rem;"></p>
+            </div>
+            
+            <div class="source-note">
+                <strong>※ 계산 로직 (출처: 복리 기본 산식 반영)</strong><br>
+                목돈(초기투자금)과 매월 투입되는 적립금의 수익률을 다르게 설정하여, 매월 각각의 수익률로 분리하여 복리 계산된 자산의 총합이 목표 금액을 넘어서는 시점을 역산합니다.
             </div>
         </div>
     </div>
@@ -465,36 +466,44 @@
         });
     }
 
-    // --- 탭 2 로직 ---
+    // --- 탭 2 로직 (수익률 분리 적용) ---
     function calculateGoal() {
         const target = getNumberValue('goalAmount');
         const initial = getNumberValue('goalInitial');
         const monthly = getNumberValue('goalMonthly');
-        const returnRate = Number(document.getElementById('goalReturn').value);
+        
+        const initialReturnRate = Number(document.getElementById('goalInitialReturn').value);
+        const monthlyReturnRate = Number(document.getElementById('goalMonthlyReturn').value);
 
         if (target <= initial) {
             alert("목표 금액이 초기 투자금보다 커야 합니다.");
             return;
         }
 
-        const monthlyRate = returnRate / 100 / 12;
-        let currentTotal = initial;
+        const initialMonthlyRate = initialReturnRate / 100 / 12;
+        const monthlyInvMonthlyRate = monthlyReturnRate / 100 / 12;
+        
+        let initialAcc = initial;
+        let monthlyAcc = 0;
         let months = 0;
 
-        while(currentTotal < target && months < 1200) {
-            currentTotal = currentTotal * (1 + monthlyRate) + monthly;
+        // 초기 자산과 매월 적립금이 각각의 수익률로 별도 성장한다고 가정
+        while((initialAcc + monthlyAcc) < target && months < 1200) {
+            initialAcc = initialAcc * (1 + initialMonthlyRate);
+            monthlyAcc = monthlyAcc * (1 + monthlyInvMonthlyRate) + monthly;
             months++;
         }
 
         const y = Math.floor(months / 12);
         const m = months % 12;
+        const totalInvested = initial + (monthly * months);
 
         document.getElementById('goalResultTime').innerText = `${y > 0 ? y + '년 ' : ''}${m}개월`;
-        document.getElementById('goalResultText').innerText = `원금 총액: ${(initial + (monthly * months)).toLocaleString()}원 투입`;
+        document.getElementById('goalResultText').innerText = `원금 총액: ${totalInvested.toLocaleString()}원 투입`;
         document.getElementById('resultBox2').style.display = 'block';
     }
 
-    // --- 탭 3 로직 (월 환산 추가 업데이트) ---
+    // --- 탭 3 로직 ---
     function calculateTaxDetail() {
         const income = getNumberValue('targetIncome');
         
@@ -523,21 +532,17 @@
         const totalDeduction = basicDividendTax + compTax + healthIns;
         const netIncome = income - totalDeduction;
 
-        // 월 환산 금액을 함께 렌더링하는 함수
         const renderValue = (id, value, isNegative = false, isFinal = false) => {
             const prefix = isNegative && value > 0 ? "-" : "";
             const annualStr = prefix + Math.round(value).toLocaleString() + "원";
             const monthlyStr = prefix + Math.round(value / 12).toLocaleString() + "원";
             
-            // 일반 텍스트 색상 및 폰트 크기 설정
             let textColor = "#6b7280";
             let textSize = "0.75rem";
             let fontWeight = "400";
             
-            // 에러/차감액 색상 처리
             if (isNegative) textColor = "#ef4444";
             
-            // 최종 실수령액 스타일 강조 처리
             if (isFinal) {
                 textColor = "var(--primary-color)";
                 textSize = "0.95rem";
@@ -559,7 +564,7 @@
         renderValue('taxComp', compTax);
         renderValue('taxHealth', healthIns);
         renderValue('taxTotalDeduction', totalDeduction, true);
-        renderValue('taxNet', netIncome, false, true); // 최종 실수령액
+        renderValue('taxNet', netIncome, false, true);
 
         document.getElementById('resultBox3').style.display = 'block';
     }
