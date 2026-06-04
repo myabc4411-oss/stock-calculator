@@ -954,13 +954,11 @@ function calculateReverse() {
   document.getElementById('resultBox5').style.display = 'block';
 }
 </script>
-</body>
-</html>
 
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js')
+    navigator.serviceWorker.register('./service-worker.js', {scope: './'})
       .then(reg => {
         reg.addEventListener('updatefound', () => {
           const newSW = reg.installing;
@@ -987,3 +985,5 @@ function showUpdateToast() {
   to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
 }
 </style>
+</body>
+</html>
