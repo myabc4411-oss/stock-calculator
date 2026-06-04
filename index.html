@@ -2,7 +2,14 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2563eb">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="스노우볼">
+<link rel="manifest" href="manifest.json">
+<title>주식 스노우볼 계산기</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -142,6 +149,15 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
   .input-group.full { grid-column: span 1; }
   .compare-grid { grid-template-columns: 1fr; }
   .reverse-grid { grid-template-columns: 1fr; }
+  body { padding: 12px 12px calc(12px + env(safe-area-inset-bottom)); }
+  .container { padding: 1.5rem 1.2rem; border-radius: 16px; }
+  h1 { font-size: 1.3rem; }
+  .tabs { gap: 5px; }
+  .tab-btn { padding: 8px 4px; font-size: 0.75rem; }
+  .calc-btn { padding: 14px; font-size: 1rem; }
+  .val.final { font-size: 1.2rem; }
+  .year-table { font-size: 0.78rem; }
+  .year-table th, .year-table td { padding: 7px 5px; }
 }
 </style>
 </head>
@@ -940,3 +956,34 @@ function calculateReverse() {
 </script>
 </body>
 </html>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => {
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          newSW.addEventListener('statechange', () => {
+            if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdateToast();
+            }
+          });
+        });
+      });
+  });
+}
+function showUpdateToast() {
+  const toast = document.createElement('div');
+  toast.innerHTML = '🔄 새 버전이 있어요! <button onclick="location.reload()" style="margin-left:10px;background:white;color:#2563eb;border:none;border-radius:6px;padding:4px 10px;font-weight:700;cursor:pointer;">새로고침</button>';
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1d4ed8;color:white;padding:14px 20px;border-radius:12px;font-size:0.9rem;font-weight:600;z-index:9999;box-shadow:0 8px 24px rgba(29,78,216,0.4);animation:swToast 0.3s ease;';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 8000);
+}
+</script>
+<style>
+@keyframes swToast {
+  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+}
+</style>
