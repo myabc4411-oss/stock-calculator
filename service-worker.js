@@ -1,7 +1,7 @@
 const CACHE_NAME = 'snowball-v1';
 const ASSETS = [
-  './index.html',
-  './manifest.json'
+  '/stock-calculator/index.html',
+  '/stock-calculator/manifest.json'
 ];
 
 // 설치: 핵심 파일만 캐시
