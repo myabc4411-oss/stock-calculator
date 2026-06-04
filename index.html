@@ -12,6 +12,8 @@
   --secondary: #1d4ed8;
   --text: #1f2937;
   --danger: #ef4444;
+  --green: #059669;
+  --orange: #d97706;
 }
 body {
   font-family: 'Poppins', "Malgun Gothic", sans-serif;
@@ -26,13 +28,13 @@ body {
 h1 { text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem; font-weight: 700; }
 h1 span { color: var(--primary); }
 .tabs {
-  display: flex; gap: 10px; margin-bottom: 2rem;
+  display: flex; gap: 8px; margin-bottom: 2rem;
   border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; overflow-x: auto;
 }
 .tab-btn {
-  flex: 1; padding: 10px; background: none; border: none; font-weight: 600;
+  flex: 1; padding: 9px 6px; background: none; border: none; font-weight: 600;
   color: #9ca3af; cursor: pointer; border-radius: 8px; transition: all 0.2s;
-  white-space: nowrap; box-shadow: none; margin-top: 0;
+  white-space: nowrap; box-shadow: none; margin-top: 0; font-size: 0.82rem;
 }
 .tab-btn.active { background: #eff6ff; color: var(--primary); }
 .tab-content { display: none; }
@@ -63,22 +65,31 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
   background: #f8fafc; border: 1px solid #e2e8f0;
   border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem;
 }
+.summary-card.green { background: #f0fdf4; border-color: #bbf7d0; }
+.summary-card.orange { background: #fffbeb; border-color: #fde68a; }
 .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
 .row.total { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
 .lbl { color: #6b7280; font-size: 0.95rem; }
 .val { font-weight: 700; color: #1f2937; font-size: 1.1rem; }
 .val.final { color: var(--primary); font-size: 1.4rem; }
-.val.profit { color: #059669; }
+.val.profit { color: var(--green); }
+.val.real { color: var(--orange); }
 .tax-box {
   background: #fff5f5; border: 1px solid #fecaca;
   border-radius: 12px; padding: 1rem 1.2rem; margin: 0.8rem 0;
 }
+.inflation-box {
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: 12px; padding: 1rem 1.2rem; margin: 0.8rem 0;
+}
+.inflation-title { font-size: 0.85rem; font-weight: 700; color: var(--orange); margin-bottom: 0.7rem; }
 .tax-title { font-size: 0.85rem; font-weight: 700; color: #dc2626; margin-bottom: 0.7rem; }
 .tax-row { display: flex; justify-content: space-between; margin-bottom: 0.55rem; font-size: 0.88rem; }
 .tax-row:last-child { margin-bottom: 0; }
 .tax-lbl { color: #6b7280; }
 .tax-lbl small { display: block; font-size: 0.75rem; color: #9ca3af; margin-top: 1px; }
 .tax-val { font-weight: 700; color: #dc2626; text-align: right; }
+.inf-val { font-weight: 700; color: var(--orange); text-align: right; }
 .tax-sum { display: flex; justify-content: space-between; padding-top: 0.6rem; margin-top: 0.6rem; border-top: 1px dashed #fca5a5; font-weight: 700; }
 .tax-sum-lbl { font-size: 0.9rem; color: #374151; }
 .tax-sum-val { font-size: 0.9rem; color: #dc2626; }
@@ -102,9 +113,35 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
   margin-top: 20px; font-size: 0.75rem; color: #9ca3af;
   line-height: 1.5; background: #f9fafb; padding: 15px; border-radius: 8px;
 }
+/* DCA 비교 카드 */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
+.compare-card {
+  border-radius: 14px; padding: 1.2rem; text-align: center; border: 2px solid #e5e7eb;
+}
+.compare-card.winner { border-color: var(--primary); background: #eff6ff; }
+.compare-card .c-title { font-size: 0.82rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; }
+.compare-card .c-val { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+.compare-card .c-sub { font-size: 0.78rem; color: #9ca3af; margin-top: 4px; }
+.compare-card.winner .c-title { color: var(--primary); }
+.badge { display: inline-block; background: var(--primary); color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 6px; vertical-align: middle; }
+/* 역산 결과 */
+.reverse-card {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border: 2px solid #bfdbfe; border-radius: 16px; padding: 1.5rem;
+  text-align: center; margin-bottom: 1.2rem;
+}
+.reverse-card .r-label { font-size: 0.9rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.4rem; }
+.reverse-card .r-val { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.3rem; }
+.reverse-card .r-sub { font-size: 0.82rem; color: #6b7280; }
+.reverse-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 1rem; }
+.reverse-item { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.9rem; text-align: center; }
+.reverse-item .ri-lbl { font-size: 0.78rem; color: #9ca3af; margin-bottom: 4px; }
+.reverse-item .ri-val { font-size: 1rem; font-weight: 700; color: var(--text); }
 @media (max-width: 480px) {
   .grid-2 { grid-template-columns: 1fr; }
   .input-group.full { grid-column: span 1; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .reverse-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -115,10 +152,12 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tab1',this)">복리 시뮬레이션</button>
     <button class="tab-btn" onclick="switchTab('tab2',this)">목표 달성 기간</button>
-    <button class="tab-btn" onclick="switchTab('tab3',this)">종소세/건보료 계산</button>
+    <button class="tab-btn" onclick="switchTab('tab3',this)">종소세/건보료</button>
+    <button class="tab-btn" onclick="switchTab('tab4',this)">DCA vs 거치식</button>
+    <button class="tab-btn" onclick="switchTab('tab5',this)">목표금액 역산</button>
   </div>
 
-  <!-- 탭1 -->
+  <!-- ===== 탭1: 복리 시뮬레이션 ===== -->
   <div id="tab1" class="tab-content active">
     <div class="grid-2">
       <div class="input-group">
@@ -163,6 +202,13 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
           <span class="unit">년</span>
         </div>
       </div>
+      <div class="input-group full">
+        <label>📉 물가상승률 (연) <span style="font-size:0.78rem;color:#9ca3af;font-weight:400;">— 실질 구매력 기준 수익 계산용</span></label>
+        <div class="input-wrapper">
+          <input type="number" id="inflationRate" value="3">
+          <span class="unit">%</span>
+        </div>
+      </div>
     </div>
     <button class="calc-btn" onclick="calculate()">세후 실수령액 계산하기 🧮</button>
 
@@ -193,11 +239,34 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         </div>
         <div class="row total"><span class="lbl">💰 세후 실수령액</span><span class="val final" id="netTotal">0원</span></div>
       </div>
+
+      <!-- 물가상승률 반영 실질 구매력 -->
+      <div class="inflation-box">
+        <div class="inflation-title"><i class="fa fa-chart-line"></i> 물가상승률 반영 실질 구매력</div>
+        <div class="tax-row">
+          <div class="tax-lbl">세후 명목 수령액</div>
+          <div class="inf-val" id="infNominal">0원</div>
+        </div>
+        <div class="tax-row">
+          <div class="tax-lbl">물가 누적 상승 배율<small id="infFactor"></small></div>
+          <div class="inf-val" id="infMultiplier">×0.00</div>
+        </div>
+        <div class="tax-row" style="padding-top:0.6rem;margin-top:0.6rem;border-top:1px dashed #fde68a;">
+          <div class="tax-lbl" style="font-weight:700;color:#374151;">오늘 화폐 기준 실질 가치</div>
+          <div class="inf-val" id="infReal">0원</div>
+        </div>
+        <div class="tax-row">
+          <div class="tax-lbl">실질 수익률 (원금 대비)</div>
+          <div class="inf-val" id="infRealReturn">0%</div>
+        </div>
+      </div>
+
       <div class="source-note">
         <strong>※ 세금 산정 기준 (2024~2025년)</strong><br>
         1. <strong>배당소득세:</strong> 배당수입 전액 × 15.4% (소득세 14% + 지방세 1.4%)<br>
         2. <strong>양도소득세:</strong> 평가차익 - 연 250만원 공제 후 × 22% (해외주식 기준)<br>
-        3. 거치금과 적립금은 각각 다른 수익률로 별도 복리 계산됩니다.
+        3. <strong>실질 구매력:</strong> 세후 수령액 ÷ (1+물가상승률)^투자기간 으로 환산<br>
+        4. 거치금과 적립금은 각각 다른 수익률로 별도 복리 계산됩니다.
       </div>
       <div style="position:relative;height:300px;width:100%;margin-top:2rem;">
         <canvas id="myChart"></canvas>
@@ -205,7 +274,7 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
     </div>
   </div>
 
-  <!-- 탭2 -->
+  <!-- ===== 탭2: 목표 달성 기간 ===== -->
   <div id="tab2" class="tab-content">
     <div class="grid-2">
       <div class="input-group full">
@@ -259,8 +328,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         <div id="goalResultTime" class="val final" style="font-size:1.8rem;margin-bottom:10px;">-</div>
         <p class="lbl" id="goalResultText" style="font-size:0.9rem;"></p>
       </div>
-
-      <!-- 연도별 상세 테이블 -->
       <h3 style="margin-bottom:0.8rem;">📅 연도별 자산 추이</h3>
       <div class="year-table-wrap">
         <table class="year-table" id="yearTable">
@@ -277,14 +344,13 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
           <tbody id="yearTableBody"></tbody>
         </table>
       </div>
-
       <div class="source-note" style="margin-top:1rem;">
         거치금과 적립금 수익률을 분리하여 각각 복리 계산합니다. 목표 달성 연차는 <span style="color:var(--primary);font-weight:700;">파란색</span>으로 표시됩니다.
       </div>
     </div>
   </div>
 
-  <!-- 탭3 -->
+  <!-- ===== 탭3: 종소세/건보료 ===== -->
   <div id="tab3" class="tab-content">
     <div class="grid-2">
       <div class="input-group full">
@@ -329,6 +395,182 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
       </div>
     </div>
   </div>
+
+  <!-- ===== 탭4: DCA vs 거치식 ===== -->
+  <div id="tab4" class="tab-content">
+    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">
+      💡 <strong>같은 총 투자금액</strong>으로 한 번에 넣는 것(거치식)과 매달 나눠 넣는 것(DCA)을 비교합니다.
+    </p>
+    <div class="grid-2">
+      <div class="input-group full">
+        <label>총 투자 예정 금액</label>
+        <div class="input-wrapper">
+          <input type="text" id="dcaTotalFund" value="120,000,000" oninput="fmtCur(this)">
+          <span class="unit">원</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>연간 기대 수익률</label>
+        <div class="input-wrapper">
+          <input type="number" id="dcaRate" value="15">
+          <span class="unit">%</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>투자 기간</label>
+        <div class="input-wrapper">
+          <input type="number" id="dcaYears" value="10">
+          <span class="unit">년</span>
+        </div>
+      </div>
+      <div class="input-group full">
+        <label>DCA 분할 납입 기간 <span style="font-size:0.78rem;color:#9ca3af;">(총 기간 중 첫 N개월)</span></label>
+        <div class="input-wrapper">
+          <input type="number" id="dcaSplitMonths" value="12">
+          <span class="unit">개월</span>
+        </div>
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calculateDCA()">전략 비교하기 ⚔️</button>
+
+    <div class="result-box" id="resultBox4">
+      <h3 style="margin-bottom:1rem;">📊 전략별 최종 결과 비교</h3>
+      <div class="compare-grid">
+        <div class="compare-card" id="dcaCard1">
+          <div class="c-title">🏦 거치식 (한 번에)</div>
+          <div class="c-val" id="dcaLumpSum">0원</div>
+          <div class="c-sub" id="dcaLumpReturn">수익률 0%</div>
+        </div>
+        <div class="compare-card" id="dcaCard2">
+          <div class="c-title">📅 DCA (분할 매수)</div>
+          <div class="c-val" id="dcaDCA">0원</div>
+          <div class="c-sub" id="dcaDCAReturn">수익률 0%</div>
+        </div>
+      </div>
+
+      <div class="summary-card" id="dcaWinnerCard" style="text-align:center;padding:1rem;">
+        <div id="dcaWinnerText" style="font-size:1rem;font-weight:700;color:var(--primary);"></div>
+        <div id="dcaDiffText" style="font-size:0.88rem;color:#6b7280;margin-top:4px;"></div>
+      </div>
+
+      <h3 style="margin-bottom:0.8rem;margin-top:1.5rem;">📅 연도별 비교 추이</h3>
+      <div class="year-table-wrap">
+        <table class="year-table">
+          <thead>
+            <tr>
+              <th>연차</th>
+              <th>거치식 자산</th>
+              <th>DCA 자산</th>
+              <th>차이</th>
+            </tr>
+          </thead>
+          <tbody id="dcaTableBody"></tbody>
+        </table>
+      </div>
+
+      <div style="position:relative;height:280px;width:100%;margin-top:2rem;">
+        <canvas id="dcaChart"></canvas>
+      </div>
+
+      <div class="source-note">
+        거치식: 첫날 전액 투자 후 운용. DCA: 납입 기간 동안 매월 균등 분할 납입, 이후 전액 운용. 세금 제외 단순 복리 비교입니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 탭5: 목표금액 역산 ===== -->
+  <div id="tab5" class="tab-content">
+    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">
+      💡 <strong>원하는 목표 금액</strong>을 달성하기 위해 <strong>지금 얼마를 투자해야 하는지</strong> 역산합니다.
+    </p>
+    <div class="grid-2">
+      <div class="input-group full">
+        <label>목표 금액 (N년 후 달성하고 싶은 금액)</label>
+        <div class="input-wrapper">
+          <input type="text" id="revGoal" value="1,000,000,000" oninput="fmtCur(this)">
+          <span class="unit">원</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>목표 달성 기간</label>
+        <div class="input-wrapper">
+          <input type="number" id="revYears" value="10">
+          <span class="unit">년</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>연간 기대 수익률</label>
+        <div class="input-wrapper">
+          <input type="number" id="revRate" value="15">
+          <span class="unit">%</span>
+        </div>
+      </div>
+      <div class="input-group full">
+        <label>매월 적립 가능 금액 <span style="font-size:0.78rem;color:#9ca3af;">(없으면 0)</span></label>
+        <div class="input-wrapper">
+          <input type="text" id="revMonthly" value="500,000" oninput="fmtCur(this)">
+          <span class="unit">원</span>
+        </div>
+      </div>
+      <div class="input-group full">
+        <label>물가상승률 (실질 목표 계산용)</label>
+        <div class="input-wrapper">
+          <input type="number" id="revInflation" value="3">
+          <span class="unit">%</span>
+        </div>
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calculateReverse()">필요 초기 투자금 역산하기 🔍</button>
+
+    <div class="result-box" id="resultBox5">
+      <div class="reverse-card">
+        <div class="r-label">지금 당장 필요한 초기 투자금</div>
+        <div class="r-val" id="revInitial">0원</div>
+        <div class="r-sub" id="revInitialSub"></div>
+      </div>
+
+      <div class="reverse-grid">
+        <div class="reverse-item">
+          <div class="ri-lbl">목표 금액 (명목)</div>
+          <div class="ri-val" id="revGoalDisp">0원</div>
+        </div>
+        <div class="reverse-item">
+          <div class="ri-lbl">오늘 화폐 기준 실질 목표</div>
+          <div class="ri-val" style="color:var(--orange);" id="revRealGoal">0원</div>
+        </div>
+        <div class="reverse-item">
+          <div class="ri-lbl">월 적립 기여분 (현재가)</div>
+          <div class="ri-val" style="color:var(--green);" id="revMonthlyContrib">0원</div>
+        </div>
+        <div class="reverse-item">
+          <div class="ri-lbl">총 납입 원금</div>
+          <div class="ri-val" id="revTotalPrincipal">0원</div>
+        </div>
+      </div>
+
+      <!-- 수익률별 시나리오 -->
+      <h3 style="margin:1.5rem 0 0.8rem;">📐 수익률별 필요 초기 투자금 시나리오</h3>
+      <div class="year-table-wrap">
+        <table class="year-table">
+          <thead>
+            <tr>
+              <th>연수익률</th>
+              <th>필요 초기투자금</th>
+              <th>총 원금</th>
+              <th>수익 배수</th>
+            </tr>
+          </thead>
+          <tbody id="revScenarioBody"></tbody>
+        </table>
+      </div>
+
+      <div class="source-note">
+        역산 공식: 필요 초기투자금 = (목표금액 - 월적립 복리합산) ÷ (1+연수익률)^기간<br>
+        월 적립분이 목표를 초과하는 경우 초기 투자금 0원으로 표시됩니다.
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -351,7 +593,7 @@ function fmtCur(input) {
 function getNum(id) { return Number(document.getElementById(id).value.replace(/,/g, '')); }
 function won(n) { return Math.round(n).toLocaleString('ko-KR') + '원'; }
 
-/* ===== 탭1 ===== */
+/* ===== 탭1: 복리 시뮬레이션 ===== */
 let myChart = null;
 function calculate() {
   const initial = getNum('initialAmount');
@@ -360,10 +602,11 @@ function calculate() {
   const mGrowth = Number(document.getElementById('monthlyGrowthRate').value) / 100 / 12;
   const divYield = Number(document.getElementById('dividendYield').value) / 100 / 12;
   const years = Number(document.getElementById('years').value);
+  const inflation = Number(document.getElementById('inflationRate').value) / 100;
   const months = years * 12;
 
-  let initialPart = initial;   // 거치금 파트
-  let monthlyPart = 0;         // 적립금 파트
+  let initialPart = initial;
+  let monthlyPart = 0;
   let totalPrincipal = initial;
   let totalDivIncome = 0;
 
@@ -372,18 +615,12 @@ function calculate() {
   const principalPoints = [initial];
 
   for (let i = 1; i <= months; i++) {
-    // 배당은 전체 자산에서 발생
     let total = initialPart + monthlyPart;
     let div = total * divYield;
     totalDivIncome += div;
-
-    // 거치금: 자체 수익률로 성장 + 배당 비례 배분
     initialPart = initialPart * (1 + iGrowth) + div * (initialPart / total || 0);
-    // 적립금: 자체 수익률로 성장 + 적립 추가 + 배당 비례 배분
     monthlyPart = monthlyPart * (1 + mGrowth) + monthly + div * (monthlyPart / total || 0);
-
     totalPrincipal += monthly;
-
     if (i % 12 === 0) {
       labels.push((i / 12) + '년');
       dataPoints.push(Math.round(initialPart + monthlyPart));
@@ -400,6 +637,11 @@ function calculate() {
   const totalTax = taxDiv + taxCap;
   const netTotal = grossTotal - totalTax;
 
+  // 물가상승률 계산
+  const inflationFactor = Math.pow(1 + inflation, years);
+  const realValue = netTotal / inflationFactor;
+  const realReturn = ((realValue / totalPrincipal) - 1) * 100;
+
   document.getElementById('grossTotal').innerText = won(grossTotal);
   document.getElementById('totalPrincipal').innerText = won(totalPrincipal);
   document.getElementById('grossProfit').innerText = '+' + Math.round(grossProfit).toLocaleString('ko-KR') + '원';
@@ -409,6 +651,13 @@ function calculate() {
   document.getElementById('taxCapitalDetail').innerText = taxCap > 0 ? '-' + won(taxCap) : '0원 (공제 이내)';
   document.getElementById('taxTotalDetail').innerText = '-' + won(totalTax);
   document.getElementById('netTotal').innerText = won(netTotal);
+
+  // 물가 박스
+  document.getElementById('infNominal').innerText = won(netTotal);
+  document.getElementById('infFactor').innerText = `연 ${inflation*100}% × ${years}년`;
+  document.getElementById('infMultiplier').innerText = `×${inflationFactor.toFixed(2)} (물가 ${((inflationFactor-1)*100).toFixed(1)}% 상승)`;
+  document.getElementById('infReal').innerText = won(realValue);
+  document.getElementById('infRealReturn').innerText = (realReturn >= 0 ? '+' : '') + realReturn.toFixed(1) + '%';
 
   document.getElementById('resultBox1').style.display = 'block';
   drawChart(labels, dataPoints, principalPoints);
@@ -433,7 +682,7 @@ function drawChart(labels, dataPoints, principalPoints) {
   });
 }
 
-/* ===== 탭2 ===== */
+/* ===== 탭2: 목표 달성 기간 ===== */
 function calculateGoal() {
   const target = getNum('goalAmount');
   const initial = getNum('goalInitial');
@@ -444,11 +693,7 @@ function calculateGoal() {
 
   if (target <= initial) { alert('목표 금액이 초기 투자금보다 커야 합니다.'); return; }
 
-  let iAcc = initial;
-  let mAcc = 0;
-  let goalMonths = -1;
-
-  // 최대 1200개월까지 탐색
+  let iAcc = initial, mAcc = 0, goalMonths = -1;
   const maxM = Math.max(1200, displayYears * 12);
   for (let m = 1; m <= maxM; m++) {
     iAcc = iAcc * (1 + iRate);
@@ -467,10 +712,8 @@ function calculateGoal() {
     document.getElementById('goalResultText').innerText = '';
   }
 
-  // 연도별 테이블 생성
   const tbody = document.getElementById('yearTableBody');
   tbody.innerHTML = '';
-
   let iA = initial, mA = 0, prin = initial;
   for (let yr = 1; yr <= displayYears; yr++) {
     for (let mo2 = 0; mo2 < 12; mo2++) {
@@ -497,7 +740,7 @@ function calculateGoal() {
   document.getElementById('resultBox2').style.display = 'block';
 }
 
-/* ===== 탭3 ===== */
+/* ===== 탭3: 종소세/건보료 ===== */
 function calculateTaxDetail() {
   const income = getNum('targetIncome');
   let basicDividendTax = income * 0.154;
@@ -536,6 +779,163 @@ function calculateTaxDetail() {
   rv('taxTotalDeduction', totalDeduction, true);
   rv('taxNet', netIncome, false, true);
   document.getElementById('resultBox3').style.display = 'block';
+}
+
+/* ===== 탭4: DCA vs 거치식 ===== */
+let dcaChart = null;
+function calculateDCA() {
+  const totalFund = getNum('dcaTotalFund');
+  const annualRate = Number(document.getElementById('dcaRate').value) / 100;
+  const years = Number(document.getElementById('dcaYears').value);
+  const splitMonths = Number(document.getElementById('dcaSplitMonths').value);
+  const totalMonths = years * 12;
+  const monthlyRate = annualRate / 12;
+
+  if (splitMonths >= totalMonths) {
+    alert('분할 납입 기간이 전체 투자 기간보다 짧아야 합니다.');
+    return;
+  }
+
+  // 거치식: 첫날 전액 투자
+  const lumpSum = totalFund * Math.pow(1 + monthlyRate, totalMonths);
+
+  // DCA: 첫 splitMonths개월 동안 균등 분할 납입
+  const monthly = totalFund / splitMonths;
+  let dcaAcc = 0;
+  for (let m = 1; m <= splitMonths; m++) {
+    // 납입 후 남은 기간 복리
+    const remaining = totalMonths - m + 1;
+    dcaAcc += monthly * Math.pow(1 + monthlyRate, remaining);
+  }
+
+  const lumpReturn = ((lumpSum / totalFund) - 1) * 100;
+  const dcaReturn = ((dcaAcc / totalFund) - 1) * 100;
+
+  document.getElementById('dcaLumpSum').innerText = won(lumpSum);
+  document.getElementById('dcaLumpReturn').innerText = `수익률 +${lumpReturn.toFixed(1)}%`;
+  document.getElementById('dcaDCA').innerText = won(dcaAcc);
+  document.getElementById('dcaDCAReturn').innerText = `수익률 +${dcaReturn.toFixed(1)}%`;
+
+  const lumpWins = lumpSum >= dcaAcc;
+  document.getElementById('dcaCard1').className = 'compare-card' + (lumpWins ? ' winner' : '');
+  document.getElementById('dcaCard2').className = 'compare-card' + (!lumpWins ? ' winner' : '');
+
+  const diff = Math.abs(lumpSum - dcaAcc);
+  const winnerName = lumpWins ? '거치식' : 'DCA';
+  document.getElementById('dcaWinnerText').innerHTML = `🏆 <strong>${winnerName}</strong>이 더 유리합니다`;
+  document.getElementById('dcaDiffText').innerText = `차이: ${won(diff)} (${Math.abs(lumpReturn - dcaReturn).toFixed(1)}%p)`;
+
+  // 연도별 테이블
+  const tbody = document.getElementById('dcaTableBody');
+  tbody.innerHTML = '';
+  const labels = [];
+  const lumpData = [], dcaData = [];
+
+  for (let yr = 1; yr <= years; yr++) {
+    const m = yr * 12;
+    const lumpVal = totalFund * Math.pow(1 + monthlyRate, m);
+
+    let dcaVal = 0;
+    for (let i = 1; i <= Math.min(splitMonths, m); i++) {
+      const rem = m - i + 1;
+      dcaVal += monthly * Math.pow(1 + monthlyRate, rem);
+    }
+
+    labels.push(yr + '년');
+    lumpData.push(Math.round(lumpVal));
+    dcaData.push(Math.round(dcaVal));
+
+    const diff2 = lumpVal - dcaVal;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${yr}년차</td>
+      <td style="color:var(--primary);font-weight:700;">${Math.round(lumpVal).toLocaleString()}원</td>
+      <td style="color:var(--green);font-weight:700;">${Math.round(dcaVal).toLocaleString()}원</td>
+      <td style="color:${diff2>=0?'var(--primary)':'var(--green)'};">${diff2>=0?'+':'-'}${Math.abs(Math.round(diff2)).toLocaleString()}원</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  // 차트
+  const ctx = document.getElementById('dcaChart').getContext('2d');
+  if (dcaChart) dcaChart.destroy();
+  dcaChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '거치식', data: lumpData, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.08)', fill: true, tension: 0.4, borderWidth: 3, pointRadius: 3 },
+        { label: 'DCA', data: dcaData, borderColor: '#059669', backgroundColor: 'rgba(5,150,105,0.08)', fill: true, tension: 0.4, borderWidth: 3, pointRadius: 3 }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  document.getElementById('resultBox4').style.display = 'block';
+}
+
+/* ===== 탭5: 목표금액 역산 ===== */
+function calculateReverse() {
+  const goal = getNum('revGoal');
+  const years = Number(document.getElementById('revYears').value);
+  const rate = Number(document.getElementById('revRate').value) / 100;
+  const monthly = getNum('revMonthly');
+  const inflation = Number(document.getElementById('revInflation').value) / 100;
+  const monthlyRate = rate / 12;
+  const totalMonths = years * 12;
+
+  // 월 적립분의 미래 가치 계산
+  let monthlyFV = 0;
+  for (let m = 1; m <= totalMonths; m++) {
+    monthlyFV += monthly * Math.pow(1 + monthlyRate, totalMonths - m + 1);
+  }
+
+  // 초기 투자금 역산
+  const remainingGoal = goal - monthlyFV;
+  const needInitial = Math.max(0, remainingGoal / Math.pow(1 + rate, years));
+
+  // 실질 목표 (물가 반영)
+  const inflFactor = Math.pow(1 + inflation, years);
+  const realGoal = goal / inflFactor;
+
+  const totalPrincipal = needInitial + monthly * totalMonths;
+
+  document.getElementById('revInitial').innerText = won(needInitial);
+  document.getElementById('revInitialSub').innerText = needInitial <= 0
+    ? '✅ 월 적립만으로도 목표 달성 가능!'
+    : `+ 월 ${monthly.toLocaleString()}원 적립 × ${years}년`;
+  document.getElementById('revGoalDisp').innerText = won(goal);
+  document.getElementById('revRealGoal').innerText = won(realGoal);
+  document.getElementById('revMonthlyContrib').innerText = won(Math.min(monthlyFV, goal));
+  document.getElementById('revTotalPrincipal').innerText = won(totalPrincipal);
+
+  // 시나리오 테이블 (수익률 5%~30%)
+  const tbody = document.getElementById('revScenarioBody');
+  tbody.innerHTML = '';
+  const scenarios = [5, 8, 10, 12, 15, 20, 25, 30];
+  scenarios.forEach(r => {
+    const mr = r / 100 / 12;
+    let mFV = 0;
+    for (let m = 1; m <= totalMonths; m++) {
+      mFV += monthly * Math.pow(1 + mr, totalMonths - m + 1);
+    }
+    const rem = goal - mFV;
+    const ni = Math.max(0, rem / Math.pow(1 + r / 100, years));
+    const tp = ni + monthly * totalMonths;
+    const multiple = tp > 0 ? (goal / tp).toFixed(1) : '∞';
+    const isTarget = r === Number(document.getElementById('revRate').value);
+    const tr = document.createElement('tr');
+    if (isTarget) tr.style.cssText = 'background:#eff6ff;font-weight:700;';
+    tr.innerHTML = `
+      <td style="${isTarget ? 'color:var(--primary);' : ''}">${r}%${isTarget ? ' ✓' : ''}</td>
+      <td style="color:var(--primary);font-weight:700;">${won(ni)}</td>
+      <td>${won(tp)}</td>
+      <td style="color:var(--green);">×${multiple}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('resultBox5').style.display = 'block';
 }
 </script>
 </body>
