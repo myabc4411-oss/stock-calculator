@@ -173,7 +173,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
     <button class="tab-btn" onclick="switchTab('tab5',this)">목표금액 역산</button>
   </div>
 
-  <!-- ===== 탭1: 복리 시뮬레이션 ===== -->
   <div id="tab1" class="tab-content active">
     <div class="grid-2">
       <div class="input-group">
@@ -256,7 +255,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         <div class="row total"><span class="lbl">💰 세후 실수령액</span><span class="val final" id="netTotal">0원</span></div>
       </div>
 
-      <!-- 물가상승률 반영 실질 구매력 -->
       <div class="inflation-box">
         <div class="inflation-title"><i class="fa fa-chart-line"></i> 물가상승률 반영 실질 구매력</div>
         <div class="tax-row">
@@ -284,13 +282,30 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         3. <strong>실질 구매력:</strong> 세후 수령액 ÷ (1+물가상승률)^투자기간 으로 환산<br>
         4. 거치금과 적립금은 각각 다른 수익률로 별도 복리 계산됩니다.
       </div>
+
+      <h3 style="margin-bottom:0.8rem;margin-top:1.5rem;">📅 연도별 자산 추이</h3>
+      <div class="year-table-wrap">
+        <table class="year-table">
+          <thead>
+            <tr>
+              <th>연차</th>
+              <th>거치금 자산</th>
+              <th>적립금 자산</th>
+              <th>총 자산</th>
+              <th>누적 원금</th>
+              <th>수익 (평가차익+배당)</th>
+            </tr>
+          </thead>
+          <tbody id="yearTableBody1"></tbody>
+        </table>
+      </div>
+
       <div style="position:relative;height:300px;width:100%;margin-top:2rem;">
         <canvas id="myChart"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- ===== 탭2: 목표 달성 기간 ===== -->
   <div id="tab2" class="tab-content">
     <div class="grid-2">
       <div class="input-group full">
@@ -366,7 +381,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
     </div>
   </div>
 
-  <!-- ===== 탭3: 종소세/건보료 ===== -->
   <div id="tab3" class="tab-content">
     <div class="grid-2">
       <div class="input-group full">
@@ -412,7 +426,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
     </div>
   </div>
 
-  <!-- ===== 탭4: DCA vs 거치식 ===== -->
   <div id="tab4" class="tab-content">
     <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">
       💡 <strong>같은 총 투자금액</strong>으로 한 번에 넣는 것(거치식)과 매달 나눠 넣는 것(DCA)을 비교합니다.
@@ -494,7 +507,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
     </div>
   </div>
 
-  <!-- ===== 탭5: 목표금액 역산 ===== -->
   <div id="tab5" class="tab-content">
     <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">
       💡 <strong>원하는 목표 금액</strong>을 달성하기 위해 <strong>지금 얼마를 투자해야 하는지</strong> 역산합니다.
@@ -564,7 +576,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         </div>
       </div>
 
-      <!-- 수익률별 시나리오 -->
       <h3 style="margin:1.5rem 0 0.8rem;">📐 수익률별 필요 초기 투자금 시나리오</h3>
       <div class="year-table-wrap">
         <table class="year-table">
@@ -630,6 +641,10 @@ function calculate() {
   const dataPoints = [initial];
   const principalPoints = [initial];
 
+  // 연도별 테이블 초기화
+  const tbody = document.getElementById('yearTableBody1');
+  if(tbody) tbody.innerHTML = ''; 
+
   for (let i = 1; i <= months; i++) {
     let total = initialPart + monthlyPart;
     let div = total * divYield;
@@ -637,10 +652,27 @@ function calculate() {
     initialPart = initialPart * (1 + iGrowth) + div * (initialPart / total || 0);
     monthlyPart = monthlyPart * (1 + mGrowth) + monthly + div * (monthlyPart / total || 0);
     totalPrincipal += monthly;
+    
+    // 1년(12개월) 주기로 차트 데이터 및 테이블 데이터 삽입
     if (i % 12 === 0) {
-      labels.push((i / 12) + '년');
+      let yr = i / 12;
+      labels.push(yr + '년');
       dataPoints.push(Math.round(initialPart + monthlyPart));
       principalPoints.push(totalPrincipal);
+
+      // 연도별 테이블 행(Row) 추가
+      let currentTotal = initialPart + monthlyPart;
+      let currentProfit = currentTotal - totalPrincipal;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${yr}년차</td>
+        <td>${Math.round(initialPart).toLocaleString()}원</td>
+        <td>${Math.round(monthlyPart).toLocaleString()}원</td>
+        <td style="color:var(--primary);font-weight:700;">${Math.round(currentTotal).toLocaleString()}원</td>
+        <td>${Math.round(totalPrincipal).toLocaleString()}원</td>
+        <td style="color:var(--green);">+${Math.round(currentProfit).toLocaleString()}원</td>
+      `;
+      if(tbody) tbody.appendChild(tr);
     }
   }
 
