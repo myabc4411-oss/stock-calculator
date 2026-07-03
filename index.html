@@ -403,18 +403,47 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         <div class="reverse-item" style="background:#f0fdf4;border-color:#bbf7d0;"><div class="ri-lbl">평균 세전 월 분배금</div><div class="ri-val" style="color:#059669;" id="divAvgGrossMonthly">0원</div></div>
         <div class="reverse-item" style="background:#eff6ff;border-color:#bfdbfe;"><div class="ri-lbl">평균 세후 월 실수령액</div><div class="ri-val" style="color:#2563eb;" id="divAvgMonthly">0원</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:1.5rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:1.5rem;">
         <div class="reverse-item" style="background:#f0fdf4;border-color:#bbf7d0;"><div class="ri-lbl">평균 연간 분배금</div><div class="ri-val" style="color:#059669;" id="divAvgAnnual">0원</div></div>
-        <div class="reverse-item" style="background:#fff5f5;border-color:#fecaca;"><div class="ri-lbl">평균 연간 세금합계</div><div class="ri-val" style="color:#dc2626;" id="divAvgTax">0원</div></div>
         <div class="reverse-item" style="background:#fffbeb;border-color:#fde68a;"><div class="ri-lbl">생활비 충족률</div><div class="ri-val" style="color:#d97706;" id="divCoverRate">0%</div></div>
       </div>
+
+      <!-- 세금 상세 breakdown -->
+      <div class="tax-box" style="margin-bottom:1.5rem;">
+        <div class="tax-title"><i class="fa fa-receipt"></i> 평균 연간 세금 차감 내역</div>
+        <div class="tax-row">
+          <div class="tax-lbl">세전 분배금 (연)</div>
+          <div style="font-weight:700;color:#374151;text-align:right;" id="divTaxGross">0원<br><span style="font-size:0.75rem;color:#9ca3af;">(월 0원)</span></div>
+        </div>
+        <div class="tax-row">
+          <div class="tax-lbl">ㄴ 배당소득세 (15.4%)</div>
+          <div class="tax-val" id="divTaxDiv">0원<br><span style="font-size:0.75rem;color:#dc2626;">(월 0원)</span></div>
+        </div>
+        <div class="tax-row">
+          <div class="tax-lbl">ㄴ 종합소득세 (2천만원 초과분 누진)</div>
+          <div class="tax-val" id="divTaxComp">0원<br><span style="font-size:0.75rem;color:#dc2626;">(월 0원)</span></div>
+        </div>
+        <div class="tax-row">
+          <div class="tax-lbl">ㄴ 건강보험료 (지역가입자 전환시 추산)</div>
+          <div class="tax-val" id="divTaxHealth">0원<br><span style="font-size:0.75rem;color:#dc2626;">(월 0원)</span></div>
+        </div>
+        <div class="tax-sum">
+          <span class="tax-sum-lbl">세금 합계 (연)</span>
+          <span class="tax-sum-val" id="divTaxTotal">0원<br><span style="font-size:0.75rem;">(월 0원)</span></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding-top:0.6rem;margin-top:0.6rem;border-top:1px solid #e2e8f0;">
+          <span style="font-weight:700;color:#374151;font-size:0.9rem;">💰 세후 실수령액 (연)</span>
+          <span style="font-weight:700;color:var(--primary);font-size:1rem;" id="divTaxNet">0원<br><span style="font-size:0.75rem;">(월 0원)</span></span>
+        </div>
+      </div>
+
       <div id="divStatusBanner" style="border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;"></div>
       <div class="summary-card" style="margin-bottom:1.5rem;">
         <div class="row"><span class="lbl">월 목표 생활비 달성에 필요한 거치금 (세전)</span><span class="val final" id="divNeedPrincipal">0원</span></div>
         <div class="row" style="margin-bottom:0;"><span class="lbl" style="font-size:0.82rem;">세후 기준 (배당소득세+종소세+건보료 감안)</span><span class="val" style="font-size:0.9rem;" id="divNeedAfterTax">0원</span></div>
       </div>
       <h3 style="margin-bottom:0.8rem;">📅 연도별 분배금 추이</h3>
-      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>수익률</th><th>거치금</th><th>세전 분배금</th><th>세전 월</th><th>세금합계</th><th>세후 월</th><th>충족</th></tr></thead><tbody id="divTableBody"></tbody></table></div>
+      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>수익률</th><th>거치금</th><th>세전 분배금</th><th>세전 월</th><th>세후 월</th><th>충족</th></tr></thead><tbody id="divTableBody"></tbody></table></div>
       <div style="position:relative;height:280px;width:100%;margin-top:2rem;"><canvas id="divChart"></canvas></div>
       <div class="source-note" style="margin-top:1.5rem;">분배금은 전액 생활비로 소비(재투자 없음). 거치금은 주가수익률만큼 매년 변동. 배당소득세 15.4% 차감.</div>
     </div>
@@ -634,7 +663,7 @@ function calculateDiv() {
   for(var t=0;t<50;t++){var testInc=testP*yieldRate;var testTax=calcDivTax(testInc);var testNet=testInc-testTax.total;if(Math.abs(testNet-annualGoal)<1000){found=true;break;}testP=testP*(annualGoal/testNet);}
   document.getElementById('divNeedPrincipal').innerText=won(needPrincipal);
   document.getElementById('divNeedAfterTax').innerText=won(found?testP:needPrincipal*1.3);
-  var principal=initial,totalNetDiv=0,totalGrossDiv=0,totalTaxSum=0,coverYears=0;
+  var principal=initial,totalNetDiv=0,totalGrossDiv=0,totalTaxSum=0,totalDivTax=0,totalCompTax=0,totalHealthIns=0,coverYears=0;
   var tbody=document.getElementById('divTableBody');tbody.innerHTML='';
   var chartLabels=[],chartNet=[],chartGoal=[];
   for(var yr=1;yr<=years;yr++){
@@ -646,13 +675,13 @@ function calculateDiv() {
     var monthlyNet=netDiv/12;
     var covered=netDiv>=annualGoal;
     if(covered)coverYears++;
-    totalNetDiv+=netDiv; totalGrossDiv+=grossDiv; totalTaxSum+=taxes.total;
+    totalNetDiv+=netDiv; totalGrossDiv+=grossDiv; totalTaxSum+=taxes.total; totalDivTax+=taxes.divTax; totalCompTax+=taxes.compTax; totalHealthIns+=taxes.healthIns;
     chartLabels.push(yr+'년');chartNet.push(Math.round(netDiv));chartGoal.push(Math.round(annualGoal));
     var rateColor=rate>=0?'#059669':'#dc2626';
     var rateStr=(rate>=0?'+':'')+(rate*100).toFixed(1)+'%';
     var coverEmoji=covered?'✅':'❌';var coverColor=covered?'#059669':'#dc2626';
     var tr=document.createElement('tr');if(!covered)tr.style.background='#fff5f5';
-    tr.innerHTML='<td>'+yr+'년차</td><td style="color:'+rateColor+';font-weight:700;">'+rateStr+'</td><td>'+Math.round(principal).toLocaleString()+'원</td><td>'+Math.round(grossDiv).toLocaleString()+'원</td><td>'+Math.round(grossMonthly).toLocaleString()+'원</td><td style="color:#dc2626;">'+Math.round(taxes.total).toLocaleString()+'원</td><td style="color:#2563eb;font-weight:700;">'+Math.round(monthlyNet).toLocaleString()+'원</td><td style="color:'+coverColor+';font-weight:700;">'+coverEmoji+'</td>';
+    tr.innerHTML='<td>'+yr+'년차</td><td style="color:'+rateColor+';font-weight:700;">'+rateStr+'</td><td>'+Math.round(principal).toLocaleString()+'원</td><td>'+Math.round(grossDiv).toLocaleString()+'원</td><td style="color:#059669;font-weight:700;">'+Math.round(grossDiv/12).toLocaleString()+'원</td><td style="color:#2563eb;font-weight:700;">'+Math.round(monthlyNet).toLocaleString()+'원</td><td style="color:'+coverColor+';font-weight:700;">'+coverEmoji+'</td>';
     tbody.appendChild(tr);
     principal=principal*(1+rate);
   }
@@ -661,8 +690,16 @@ function calculateDiv() {
   document.getElementById('divAvgGrossMonthly').innerText=won(avgGross/12);
   document.getElementById('divAvgMonthly').innerText=won(avgNet/12);
   document.getElementById('divAvgAnnual').innerText=won(avgGross);
-  document.getElementById('divAvgTax').innerText=won(avgTax);
   document.getElementById('divCoverRate').innerText=coverRate+'%';
+  // 세금 상세 breakdown (평균 기준)
+  var ad=totalDivTax/years, ac=totalCompTax/years, ah=totalHealthIns/years;
+  function taxVal(ann){return Math.round(ann).toLocaleString()+'원<br><span style="font-size:0.75rem;color:#dc2626;">(월 '+Math.round(ann/12).toLocaleString()+'원)</span>';}
+  document.getElementById('divTaxGross').innerHTML=Math.round(avgGross).toLocaleString()+'원<br><span style="font-size:0.75rem;color:#9ca3af;">(월 '+Math.round(avgGross/12).toLocaleString()+'원)</span>';
+  document.getElementById('divTaxDiv').innerHTML=taxVal(ad);
+  document.getElementById('divTaxComp').innerHTML=taxVal(ac);
+  document.getElementById('divTaxHealth').innerHTML=taxVal(ah);
+  document.getElementById('divTaxTotal').innerHTML=Math.round(avgTax).toLocaleString()+'원<br><span style="font-size:0.75rem;">(월 '+Math.round(avgTax/12).toLocaleString()+'원)</span>';
+  document.getElementById('divTaxNet').innerHTML=Math.round(avgNet).toLocaleString()+'원<br><span style="font-size:0.75rem;">(월 '+Math.round(avgNet/12).toLocaleString()+'원)</span>';
   var banner=document.getElementById('divStatusBanner');
   if(Number(coverRate)>=80){banner.style.cssText='border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#f0fdf4;border:2px solid #86efac;color:#059669;';banner.innerText='✅ '+coverRate+'% 기간 동안 생활비 충족! 안정적인 배당 생활 가능합니다.';}
   else if(Number(coverRate)>=50){banner.style.cssText='border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#fffbeb;border:2px solid #fde68a;color:#d97706;';banner.innerText='⚠️ '+coverRate+'% 기간만 생활비 충족. 거치금 확대 또는 지출 절감이 필요합니다.';}
