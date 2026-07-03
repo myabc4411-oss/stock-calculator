@@ -34,16 +34,24 @@ body {
 }
 h1 { text-align: center; margin-bottom: 1.5rem; font-size: 1.6rem; font-weight: 700; }
 h1 span { color: var(--primary); }
-.tabs {
-  display: flex; gap: 8px; margin-bottom: 2rem;
-  border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; overflow-x: auto;
+.tab-select-wrap {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 14px;
 }
-.tab-btn {
-  flex: 1; padding: 9px 6px; background: none; border: none; font-weight: 600;
-  color: #9ca3af; cursor: pointer; border-radius: 8px; transition: all 0.2s;
-  white-space: nowrap; box-shadow: none; margin-top: 0; font-size: 0.82rem;
+.tab-select {
+  width: 100%; padding: 12px 16px;
+  border: 2px solid #e5e7eb; border-radius: 10px;
+  font-size: 1rem; font-weight: 600; color: var(--primary);
+  background: #eff6ff; cursor: pointer; outline: none;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232563eb' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  transition: border-color 0.2s;
 }
-.tab-btn.active { background: #eff6ff; color: var(--primary); }
+.tab-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -72,15 +80,12 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
   background: #f8fafc; border: 1px solid #e2e8f0;
   border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem;
 }
-.summary-card.green { background: #f0fdf4; border-color: #bbf7d0; }
-.summary-card.orange { background: #fffbeb; border-color: #fde68a; }
 .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
 .row.total { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
 .lbl { color: #6b7280; font-size: 0.95rem; }
 .val { font-weight: 700; color: #1f2937; font-size: 1.1rem; }
 .val.final { color: var(--primary); font-size: 1.4rem; }
 .val.profit { color: var(--green); }
-.val.real { color: var(--orange); }
 .tax-box {
   background: #fff5f5; border: 1px solid #fecaca;
   border-radius: 12px; padding: 1rem 1.2rem; margin: 0.8rem 0;
@@ -100,7 +105,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
 .tax-sum { display: flex; justify-content: space-between; padding-top: 0.6rem; margin-top: 0.6rem; border-top: 1px dashed #fca5a5; font-weight: 700; }
 .tax-sum-lbl { font-size: 0.9rem; color: #374151; }
 .tax-sum-val { font-size: 0.9rem; color: #dc2626; }
-/* 연도별 테이블 */
 .year-table-wrap { overflow-x: auto; margin-top: 1.2rem; }
 .year-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
 .year-table th {
@@ -120,7 +124,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
   margin-top: 20px; font-size: 0.75rem; color: #9ca3af;
   line-height: 1.5; background: #f9fafb; padding: 15px; border-radius: 8px;
 }
-/* DCA 비교 카드 */
 .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
 .compare-card {
   border-radius: 14px; padding: 1.2rem; text-align: center; border: 2px solid #e5e7eb;
@@ -130,8 +133,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
 .compare-card .c-val { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
 .compare-card .c-sub { font-size: 0.78rem; color: #9ca3af; margin-top: 4px; }
 .compare-card.winner .c-title { color: var(--primary); }
-.badge { display: inline-block; background: var(--primary); color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 6px; vertical-align: middle; }
-/* 역산 결과 */
 .reverse-card {
   background: linear-gradient(135deg, #eff6ff, #dbeafe);
   border: 2px solid #bfdbfe; border-radius: 16px; padding: 1.5rem;
@@ -144,6 +145,9 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
 .reverse-item { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.9rem; text-align: center; }
 .reverse-item .ri-lbl { font-size: 0.78rem; color: #9ca3af; margin-bottom: 4px; }
 .reverse-item .ri-val { font-size: 1rem; font-weight: 700; color: var(--text); }
+.scenario-btn {
+  padding:5px 10px; border-radius:6px; font-size:0.78rem; font-weight:600; cursor:pointer;
+}
 @media (max-width: 480px) {
   .grid-2 { grid-template-columns: 1fr; }
   .input-group.full { grid-column: span 1; }
@@ -152,12 +156,14 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
   body { padding: 12px 12px calc(12px + env(safe-area-inset-bottom)); }
   .container { padding: 1.5rem 1.2rem; border-radius: 16px; }
   h1 { font-size: 1.3rem; }
-  .tabs { gap: 5px; }
-  .tab-btn { padding: 8px 4px; font-size: 0.75rem; }
   .calc-btn { padding: 14px; font-size: 1rem; }
   .val.final { font-size: 1.2rem; }
   .year-table { font-size: 0.78rem; }
   .year-table th, .year-table td { padding: 7px 5px; }
+}
+@keyframes swToast {
+  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
 }
 </style>
 </head>
@@ -165,16 +171,18 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
 <div class="container">
   <h1>📈 주식 투자 <span>스노우볼</span> 계산기</h1>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('tab1',this)">복리 시뮬레이션</button>
-    <button class="tab-btn" onclick="switchTab('tab2',this)">목표 달성 기간</button>
-    <button class="tab-btn" onclick="switchTab('tab3',this)">종소세/건보료</button>
-    <button class="tab-btn" onclick="switchTab('tab4',this)">DCA vs 거치식</button>
-    <button class="tab-btn" onclick="switchTab('tab5',this)">목표금액 역산</button>
-    <button class="tab-btn" onclick="switchTab('tab6',this)">배당 생활비</button>
+  <div class="tab-select-wrap">
+    <select class="tab-select" id="tabSelect" onchange="switchTab(this.value)">
+      <option value="tab1">📊 복리 시뮬레이션</option>
+      <option value="tab2">⏳ 목표 달성 기간</option>
+      <option value="tab3">💸 종소세/건보료</option>
+      <option value="tab4">⚔️ DCA vs 거치식</option>
+      <option value="tab5">🔍 목표금액 역산</option>
+      <option value="tab6">🏦 배당 생활비</option>
+    </select>
   </div>
 
-  <!-- ===== 탭1: 복리 시뮬레이션 ===== -->
+  <!-- 탭1 -->
   <div id="tab1" class="tab-content active">
     <div class="grid-2">
       <div class="input-group">
@@ -228,7 +236,6 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
       </div>
     </div>
     <button class="calc-btn" onclick="calculate()">세후 실수령액 계산하기 🧮</button>
-
     <div class="result-box" id="resultBox1">
       <h3>📊 투자 결과 분석</h3>
       <div class="summary-card">
@@ -256,89 +263,40 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         </div>
         <div class="row total"><span class="lbl">💰 세후 실수령액</span><span class="val final" id="netTotal">0원</span></div>
       </div>
-
-      <!-- 물가상승률 반영 실질 구매력 -->
       <div class="inflation-box">
         <div class="inflation-title"><i class="fa fa-chart-line"></i> 물가상승률 반영 실질 구매력</div>
-        <div class="tax-row">
-          <div class="tax-lbl">세후 명목 수령액</div>
-          <div class="inf-val" id="infNominal">0원</div>
-        </div>
-        <div class="tax-row">
-          <div class="tax-lbl">물가 누적 상승 배율<small id="infFactor"></small></div>
-          <div class="inf-val" id="infMultiplier">×0.00</div>
-        </div>
+        <div class="tax-row"><div class="tax-lbl">세후 명목 수령액</div><div class="inf-val" id="infNominal">0원</div></div>
+        <div class="tax-row"><div class="tax-lbl">물가 누적 상승 배율<small id="infFactor"></small></div><div class="inf-val" id="infMultiplier">×0.00</div></div>
         <div class="tax-row" style="padding-top:0.6rem;margin-top:0.6rem;border-top:1px dashed #fde68a;">
           <div class="tax-lbl" style="font-weight:700;color:#374151;">오늘 화폐 기준 실질 가치</div>
           <div class="inf-val" id="infReal">0원</div>
         </div>
-        <div class="tax-row">
-          <div class="tax-lbl">실질 수익률 (원금 대비)</div>
-          <div class="inf-val" id="infRealReturn">0%</div>
-        </div>
+        <div class="tax-row"><div class="tax-lbl">실질 수익률 (원금 대비)</div><div class="inf-val" id="infRealReturn">0%</div></div>
       </div>
-
       <div class="source-note">
         <strong>※ 세금 산정 기준 (2024~2025년)</strong><br>
-        1. <strong>배당소득세:</strong> 배당수입 전액 × 15.4% (소득세 14% + 지방세 1.4%)<br>
+        1. <strong>배당소득세:</strong> 배당수입 전액 × 15.4%<br>
         2. <strong>양도소득세:</strong> 평가차익 - 연 250만원 공제 후 × 22% (해외주식 기준)<br>
-        3. <strong>실질 구매력:</strong> 세후 수령액 ÷ (1+물가상승률)^투자기간 으로 환산<br>
+        3. <strong>실질 구매력:</strong> 세후 수령액 ÷ (1+물가상승률)^투자기간<br>
         4. 거치금과 적립금은 각각 다른 수익률로 별도 복리 계산됩니다.
       </div>
-      <div style="position:relative;height:300px;width:100%;margin-top:2rem;">
-        <canvas id="myChart"></canvas>
-      </div>
+      <h3 style="margin-bottom:0.8rem;margin-top:1.5rem;">📅 연도별 자산 추이</h3>
+      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>거치금 자산</th><th>적립금 자산</th><th>총 자산</th><th>누적 원금</th><th>수익</th></tr></thead><tbody id="tab1YearBody"></tbody></table></div>
+      <div style="position:relative;height:300px;width:100%;margin-top:2rem;"><canvas id="myChart"></canvas></div>
     </div>
   </div>
 
-  <!-- ===== 탭2: 목표 달성 기간 ===== -->
+  <!-- 탭2 -->
   <div id="tab2" class="tab-content">
     <div class="grid-2">
-      <div class="input-group full">
-        <label>목표 금액</label>
-        <div class="input-wrapper">
-          <input type="text" id="goalAmount" value="1,000,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>초기 투자금</label>
-        <div class="input-wrapper">
-          <input type="text" id="goalInitial" value="200,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>초기 투자금 기대 수익률(연)</label>
-        <div class="input-wrapper">
-          <input type="number" id="goalInitialReturn" value="10">
-          <span class="unit">%</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>매월 적립금액</label>
-        <div class="input-wrapper">
-          <input type="text" id="goalMonthly" value="1,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>매월 적립금 기대 수익률(연)</label>
-        <div class="input-wrapper">
-          <input type="number" id="goalMonthlyReturn" value="20">
-          <span class="unit">%</span>
-        </div>
-      </div>
-      <div class="input-group full">
-        <label>목표 기간 (연도별 상세 표시 기준)</label>
-        <div class="input-wrapper">
-          <input type="number" id="goalYears" value="20">
-          <span class="unit">년</span>
-        </div>
-      </div>
+      <div class="input-group full"><label>목표 금액</label><div class="input-wrapper"><input type="text" id="goalAmount" value="1,000,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group"><label>초기 투자금</label><div class="input-wrapper"><input type="text" id="goalInitial" value="200,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group"><label>초기 투자금 기대 수익률(연)</label><div class="input-wrapper"><input type="number" id="goalInitialReturn" value="10"><span class="unit">%</span></div></div>
+      <div class="input-group"><label>매월 적립금액</label><div class="input-wrapper"><input type="text" id="goalMonthly" value="1,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group"><label>매월 적립금 기대 수익률(연)</label><div class="input-wrapper"><input type="number" id="goalMonthlyReturn" value="20"><span class="unit">%</span></div></div>
+      <div class="input-group full"><label>목표 기간 (연도별 상세 표시 기준)</label><div class="input-wrapper"><input type="number" id="goalYears" value="20"><span class="unit">년</span></div></div>
     </div>
     <button class="calc-btn" onclick="calculateGoal()">도달 시간 계산하기 ⏳</button>
-
     <div class="result-box" id="resultBox2">
       <div class="summary-card" style="text-align:center;padding:2rem 1rem;">
         <p class="lbl" style="margin-bottom:10px;">목표 금액 달성까지 걸리는 시간</p>
@@ -346,428 +304,174 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         <p class="lbl" id="goalResultText" style="font-size:0.9rem;"></p>
       </div>
       <h3 style="margin-bottom:0.8rem;">📅 연도별 자산 추이</h3>
-      <div class="year-table-wrap">
-        <table class="year-table" id="yearTable">
-          <thead>
-            <tr>
-              <th>연차</th>
-              <th>거치금 자산</th>
-              <th>적립금 자산</th>
-              <th>총 자산</th>
-              <th>누적 원금</th>
-              <th>수익</th>
-            </tr>
-          </thead>
-          <tbody id="yearTableBody"></tbody>
-        </table>
-      </div>
-      <div class="source-note" style="margin-top:1rem;">
-        거치금과 적립금 수익률을 분리하여 각각 복리 계산합니다. 목표 달성 연차는 <span style="color:var(--primary);font-weight:700;">파란색</span>으로 표시됩니다.
-      </div>
+      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>거치금 자산</th><th>적립금 자산</th><th>총 자산</th><th>누적 원금</th><th>수익</th></tr></thead><tbody id="yearTableBody"></tbody></table></div>
+      <div class="source-note" style="margin-top:1rem;">거치금과 적립금 수익률을 분리하여 각각 복리 계산합니다.</div>
     </div>
   </div>
 
-  <!-- ===== 탭3: 종소세/건보료 ===== -->
+  <!-- 탭3 -->
   <div id="tab3" class="tab-content">
     <div class="grid-2">
-      <div class="input-group full">
-        <label>연간 발생 금융소득 (배당금+이자)</label>
-        <div class="input-wrapper">
-          <input type="text" id="targetIncome" value="30,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
+      <div class="input-group full"><label>연간 발생 금융소득 (배당금+이자)</label><div class="input-wrapper"><input type="text" id="targetIncome" value="30,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
     </div>
     <button class="calc-btn" onclick="calculateTaxDetail()">실수령액 확인하기 💸</button>
-
     <div class="result-box" id="resultBox3">
       <div class="summary-card">
         <div class="row"><span class="lbl">연간 총 금융소득</span><span class="val" id="taxGross">0원</span></div>
-        <div class="row" style="margin-top:15px;font-size:0.9rem;color:#ef4444;">
-          <span class="lbl">예상 차감액 합계 (▼)</span>
-          <span class="val" style="color:#ef4444;" id="taxTotalDeduction">0원</span>
-        </div>
-        <div class="row" style="font-size:0.8rem;color:#9ca3af;margin-bottom:0;">
-          <span class="lbl">ㄴ 배당소득세 (15.4%)</span>
-          <span class="val" id="taxBasicDividend">0원</span>
-        </div>
-        <div class="row" style="font-size:0.8rem;color:#9ca3af;margin-bottom:0;">
-          <span class="lbl">ㄴ 종합소득세 (2천만원 초과분 누진)</span>
-          <span class="val" id="taxComp">0원</span>
-        </div>
-        <div class="row" style="font-size:0.8rem;color:#9ca3af;">
-          <span class="lbl">ㄴ 건강보험료 (지역가입자 전환시 추산)</span>
-          <span class="val" id="taxHealth">0원</span>
-        </div>
-        <div class="row total">
-          <span class="lbl">💰 최종 세후 실수령액</span>
-          <span class="val final" id="taxNet">0원</span>
-        </div>
+        <div class="row" style="margin-top:15px;font-size:0.9rem;color:#ef4444;"><span class="lbl">예상 차감액 합계 (▼)</span><span class="val" style="color:#ef4444;" id="taxTotalDeduction">0원</span></div>
+        <div class="row" style="font-size:0.8rem;color:#9ca3af;margin-bottom:0;"><span class="lbl">ㄴ 배당소득세 (15.4%)</span><span class="val" id="taxBasicDividend">0원</span></div>
+        <div class="row" style="font-size:0.8rem;color:#9ca3af;margin-bottom:0;"><span class="lbl">ㄴ 종합소득세 (2천만원 초과분 누진)</span><span class="val" id="taxComp">0원</span></div>
+        <div class="row" style="font-size:0.8rem;color:#9ca3af;"><span class="lbl">ㄴ 건강보험료 (지역가입자 전환시 추산)</span><span class="val" id="taxHealth">0원</span></div>
+        <div class="row total"><span class="lbl">💰 최종 세후 실수령액</span><span class="val final" id="taxNet">0원</span></div>
       </div>
-      <div class="source-note">
-        <strong>※ 산정 기준 (2024~2025년)</strong><br>
-        1. 배당소득세: 소득세법 §129. 14% + 지방세 1.4% = 15.4%<br>
-        2. 종합소득세: 소득세법 §14. 금융소득 2,000만원 초과 시 종합과세 누진 적용 (타소득 없음 가정)<br>
-        3. 건강보험료: 연 2,000만원 초과 시 지역가입자 전환, 소득월액 기준 약 8% 추산
-      </div>
+      <div class="source-note"><strong>※ 산정 기준</strong><br>1. 배당소득세: 14% + 지방세 1.4% = 15.4%<br>2. 종합소득세: 금융소득 2,000만원 초과 시 종합과세 누진<br>3. 건강보험료: 2,000만원 초과 시 소득월액 기준 약 8%</div>
     </div>
   </div>
 
-  <!-- ===== 탭4: DCA vs 거치식 ===== -->
+  <!-- 탭4 -->
   <div id="tab4" class="tab-content">
-    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">
-      💡 <strong>같은 총 투자금액</strong>으로 한 번에 넣는 것(거치식)과 매달 나눠 넣는 것(DCA)을 비교합니다.
-    </p>
+    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">💡 <strong>같은 총 투자금액</strong>으로 한 번에 넣는 것(거치식)과 매달 나눠 넣는 것(DCA)을 비교합니다.</p>
     <div class="grid-2">
-      <div class="input-group full">
-        <label>총 투자 예정 금액</label>
-        <div class="input-wrapper">
-          <input type="text" id="dcaTotalFund" value="120,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>연간 기대 수익률</label>
-        <div class="input-wrapper">
-          <input type="number" id="dcaRate" value="15">
-          <span class="unit">%</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>투자 기간</label>
-        <div class="input-wrapper">
-          <input type="number" id="dcaYears" value="10">
-          <span class="unit">년</span>
-        </div>
-      </div>
-      <div class="input-group full">
-        <label>DCA 분할 납입 기간 <span style="font-size:0.78rem;color:#9ca3af;">(총 기간 중 첫 N개월)</span></label>
-        <div class="input-wrapper">
-          <input type="number" id="dcaSplitMonths" value="12">
-          <span class="unit">개월</span>
-        </div>
-      </div>
+      <div class="input-group full"><label>총 투자 예정 금액</label><div class="input-wrapper"><input type="text" id="dcaTotalFund" value="120,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group"><label>연간 기대 수익률</label><div class="input-wrapper"><input type="number" id="dcaRate" value="15"><span class="unit">%</span></div></div>
+      <div class="input-group"><label>투자 기간</label><div class="input-wrapper"><input type="number" id="dcaYears" value="10"><span class="unit">년</span></div></div>
+      <div class="input-group full"><label>DCA 분할 납입 기간 <span style="font-size:0.78rem;color:#9ca3af;">(총 기간 중 첫 N개월)</span></label><div class="input-wrapper"><input type="number" id="dcaSplitMonths" value="12"><span class="unit">개월</span></div></div>
     </div>
     <button class="calc-btn" onclick="calculateDCA()">전략 비교하기 ⚔️</button>
-
     <div class="result-box" id="resultBox4">
       <h3 style="margin-bottom:1rem;">📊 전략별 최종 결과 비교</h3>
       <div class="compare-grid">
-        <div class="compare-card" id="dcaCard1">
-          <div class="c-title">🏦 거치식 (한 번에)</div>
-          <div class="c-val" id="dcaLumpSum">0원</div>
-          <div class="c-sub" id="dcaLumpReturn">수익률 0%</div>
-        </div>
-        <div class="compare-card" id="dcaCard2">
-          <div class="c-title">📅 DCA (분할 매수)</div>
-          <div class="c-val" id="dcaDCA">0원</div>
-          <div class="c-sub" id="dcaDCAReturn">수익률 0%</div>
-        </div>
+        <div class="compare-card" id="dcaCard1"><div class="c-title">🏦 거치식 (한 번에)</div><div class="c-val" id="dcaLumpSum">0원</div><div class="c-sub" id="dcaLumpReturn">수익률 0%</div></div>
+        <div class="compare-card" id="dcaCard2"><div class="c-title">📅 DCA (분할 매수)</div><div class="c-val" id="dcaDCA">0원</div><div class="c-sub" id="dcaDCAReturn">수익률 0%</div></div>
       </div>
-
-      <div class="summary-card" id="dcaWinnerCard" style="text-align:center;padding:1rem;">
-        <div id="dcaWinnerText" style="font-size:1rem;font-weight:700;color:var(--primary);"></div>
-        <div id="dcaDiffText" style="font-size:0.88rem;color:#6b7280;margin-top:4px;"></div>
-      </div>
-
+      <div class="summary-card" style="text-align:center;padding:1rem;"><div id="dcaWinnerText" style="font-size:1rem;font-weight:700;color:var(--primary);"></div><div id="dcaDiffText" style="font-size:0.88rem;color:#6b7280;margin-top:4px;"></div></div>
       <h3 style="margin-bottom:0.8rem;margin-top:1.5rem;">📅 연도별 비교 추이</h3>
-      <div class="year-table-wrap">
-        <table class="year-table">
-          <thead>
-            <tr>
-              <th>연차</th>
-              <th>거치식 자산</th>
-              <th>DCA 자산</th>
-              <th>차이</th>
-            </tr>
-          </thead>
-          <tbody id="dcaTableBody"></tbody>
-        </table>
-      </div>
-
-      <div style="position:relative;height:280px;width:100%;margin-top:2rem;">
-        <canvas id="dcaChart"></canvas>
-      </div>
-
-      <div class="source-note">
-        거치식: 첫날 전액 투자 후 운용. DCA: 납입 기간 동안 매월 균등 분할 납입, 이후 전액 운용. 세금 제외 단순 복리 비교입니다.
-      </div>
+      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>거치식 자산</th><th>DCA 자산</th><th>차이</th></tr></thead><tbody id="dcaTableBody"></tbody></table></div>
+      <div style="position:relative;height:280px;width:100%;margin-top:2rem;"><canvas id="dcaChart"></canvas></div>
+      <div class="source-note">거치식: 첫날 전액 투자 후 운용. DCA: 납입 기간 동안 매월 균등 분할 납입, 이후 전액 운용. 세금 제외 단순 복리 비교.</div>
     </div>
   </div>
 
-  <!-- ===== 탭5: 목표금액 역산 ===== -->
+  <!-- 탭5 -->
   <div id="tab5" class="tab-content">
-    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">
-      💡 <strong>원하는 목표 금액</strong>을 달성하기 위해 <strong>지금 얼마를 투자해야 하는지</strong> 역산합니다.
-    </p>
+    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">💡 <strong>원하는 목표 금액</strong>을 달성하기 위해 <strong>지금 얼마를 투자해야 하는지</strong> 역산합니다.</p>
     <div class="grid-2">
+      <div class="input-group full"><label>목표 금액</label><div class="input-wrapper"><input type="text" id="revGoal" value="1,000,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group"><label>목표 달성 기간</label><div class="input-wrapper"><input type="number" id="revYears" value="10"><span class="unit">년</span></div></div>
+      <div class="input-group"><label>연간 기대 수익률</label><div class="input-wrapper"><input type="number" id="revRate" value="15"><span class="unit">%</span></div></div>
+      <div class="input-group full"><label>매월 적립 가능 금액</label><div class="input-wrapper"><input type="text" id="revMonthly" value="500,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group full"><label>물가상승률</label><div class="input-wrapper"><input type="number" id="revInflation" value="3"><span class="unit">%</span></div></div>
+    </div>
+    <button class="calc-btn" onclick="calculateReverse()">필요 초기 투자금 역산하기 🔍</button>
+    <div class="result-box" id="resultBox5">
+      <div class="reverse-card"><div class="r-label">지금 당장 필요한 초기 투자금</div><div class="r-val" id="revInitial">0원</div><div class="r-sub" id="revInitialSub"></div></div>
+      <div class="reverse-grid">
+        <div class="reverse-item"><div class="ri-lbl">목표 금액 (명목)</div><div class="ri-val" id="revGoalDisp">0원</div></div>
+        <div class="reverse-item"><div class="ri-lbl">오늘 화폐 기준 실질 목표</div><div class="ri-val" style="color:var(--orange);" id="revRealGoal">0원</div></div>
+        <div class="reverse-item"><div class="ri-lbl">월 적립 기여분 (현재가)</div><div class="ri-val" style="color:var(--green);" id="revMonthlyContrib">0원</div></div>
+        <div class="reverse-item"><div class="ri-lbl">총 납입 원금</div><div class="ri-val" id="revTotalPrincipal">0원</div></div>
+      </div>
+      <h3 style="margin:1.5rem 0 0.8rem;">📐 수익률별 필요 초기 투자금 시나리오</h3>
+      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연수익률</th><th>필요 초기투자금</th><th>총 원금</th><th>수익 배수</th></tr></thead><tbody id="revScenarioBody"></tbody></table></div>
+      <div class="source-note">역산 공식: 필요 초기투자금 = (목표금액 - 월적립 복리합산) ÷ (1+연수익률)^기간</div>
+    </div>
+  </div>
+
+  <!-- 탭6 -->
+  <div id="tab6" class="tab-content">
+    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">💡 배당/분배금을 <strong>전액 생활비로 소비</strong>할 때, 거치금 변화에 따른 연도별 분배금을 시뮬레이션합니다.</p>
+    <div class="grid-2">
+      <div class="input-group"><label>초기 거치금</label><div class="input-wrapper"><input type="text" id="divInitial" value="500,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group"><label>배당/분배 수익률 (연)</label><div class="input-wrapper"><input type="number" id="divYieldRate" value="8" step="0.1"><span class="unit">%</span></div></div>
+      <div class="input-group"><label>월 목표 생활비</label><div class="input-wrapper"><input type="text" id="divMonthlyGoal" value="3,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
+      <div class="input-group"><label>시뮬레이션 기간</label><div class="input-wrapper"><input type="number" id="divYears" value="20"><span class="unit">년</span></div></div>
       <div class="input-group full">
-        <label>목표 금액 (N년 후 달성하고 싶은 금액)</label>
-        <div class="input-wrapper">
-          <input type="text" id="revGoal" value="1,000,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>목표 달성 기간</label>
-        <div class="input-wrapper">
-          <input type="number" id="revYears" value="10">
-          <span class="unit">년</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>연간 기대 수익률</label>
-        <div class="input-wrapper">
-          <input type="number" id="revRate" value="15">
-          <span class="unit">%</span>
-        </div>
-      </div>
-      <div class="input-group full">
-        <label>매월 적립 가능 금액 <span style="font-size:0.78rem;color:#9ca3af;">(없으면 0)</span></label>
-        <div class="input-wrapper">
-          <input type="text" id="revMonthly" value="500,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group full">
-        <label>물가상승률 (실질 목표 계산용)</label>
-        <div class="input-wrapper">
-          <input type="number" id="revInflation" value="3">
-          <span class="unit">%</span>
+        <label>📐 연도별 주가 수익률 시나리오 (콤마로 구분, 반복 적용)</label>
+        <div class="input-wrapper" style="padding-right:0;"><input type="text" id="divScenario" value="10, 5, -10, 15, 0, 8, -20, 12" style="padding-right:12px;text-align:left;"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <button class="scenario-btn" style="border:1px solid #bfdbfe;background:#eff6ff;color:#2563eb;" onclick="setScenario('bull')">📈 강세장</button>
+          <button class="scenario-btn" style="border:1px solid #fecaca;background:#fff5f5;color:#dc2626;" onclick="setScenario('bear')">📉 약세장</button>
+          <button class="scenario-btn" style="border:1px solid #e5e7eb;background:#f9fafb;color:#6b7280;" onclick="setScenario('flat')">➡️ 횡보장</button>
+          <button class="scenario-btn" style="border:1px solid #fde68a;background:#fffbeb;color:#d97706;" onclick="setScenario('volatile')">🎢 변동장</button>
+          <button class="scenario-btn" style="border:1px solid #fca5a5;background:#fef2f2;color:#dc2626;" onclick="setScenario('crash')">💥 폭락 포함</button>
         </div>
       </div>
     </div>
-    <button class="calc-btn" onclick="calculateReverse()">필요 초기 투자금 역산하기 🔍</button>
-
-    <div class="result-box" id="resultBox5">
-      <div class="reverse-card">
-        <div class="r-label">지금 당장 필요한 초기 투자금</div>
-        <div class="r-val" id="revInitial">0원</div>
-        <div class="r-sub" id="revInitialSub"></div>
+    <button class="calc-btn" onclick="calculateDiv()">분배금 시뮬레이션 🏦</button>
+    <div class="result-box" id="resultBox6">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem;">
+        <div class="reverse-item" style="background:#f0fdf4;border-color:#bbf7d0;"><div class="ri-lbl">평균 세전 월 분배금</div><div class="ri-val" style="color:#059669;" id="divAvgGrossMonthly">0원</div></div>
+        <div class="reverse-item" style="background:#eff6ff;border-color:#bfdbfe;"><div class="ri-lbl">평균 세후 월 실수령액</div><div class="ri-val" style="color:#2563eb;" id="divAvgMonthly">0원</div></div>
       </div>
-
-      <div class="reverse-grid">
-        <div class="reverse-item">
-          <div class="ri-lbl">목표 금액 (명목)</div>
-          <div class="ri-val" id="revGoalDisp">0원</div>
-        </div>
-        <div class="reverse-item">
-          <div class="ri-lbl">오늘 화폐 기준 실질 목표</div>
-          <div class="ri-val" style="color:var(--orange);" id="revRealGoal">0원</div>
-        </div>
-        <div class="reverse-item">
-          <div class="ri-lbl">월 적립 기여분 (현재가)</div>
-          <div class="ri-val" style="color:var(--green);" id="revMonthlyContrib">0원</div>
-        </div>
-        <div class="reverse-item">
-          <div class="ri-lbl">총 납입 원금</div>
-          <div class="ri-val" id="revTotalPrincipal">0원</div>
-        </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:1.5rem;">
+        <div class="reverse-item" style="background:#f0fdf4;border-color:#bbf7d0;"><div class="ri-lbl">평균 연간 분배금</div><div class="ri-val" style="color:#059669;" id="divAvgAnnual">0원</div></div>
+        <div class="reverse-item" style="background:#fff5f5;border-color:#fecaca;"><div class="ri-lbl">평균 연간 세금합계</div><div class="ri-val" style="color:#dc2626;" id="divAvgTax">0원</div></div>
+        <div class="reverse-item" style="background:#fffbeb;border-color:#fde68a;"><div class="ri-lbl">생활비 충족률</div><div class="ri-val" style="color:#d97706;" id="divCoverRate">0%</div></div>
       </div>
-
-      <!-- 수익률별 시나리오 -->
-      <h3 style="margin:1.5rem 0 0.8rem;">📐 수익률별 필요 초기 투자금 시나리오</h3>
-      <div class="year-table-wrap">
-        <table class="year-table">
-          <thead>
-            <tr>
-              <th>연수익률</th>
-              <th>필요 초기투자금</th>
-              <th>총 원금</th>
-              <th>수익 배수</th>
-            </tr>
-          </thead>
-          <tbody id="revScenarioBody"></tbody>
-        </table>
+      <div id="divStatusBanner" style="border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;"></div>
+      <div class="summary-card" style="margin-bottom:1.5rem;">
+        <div class="row"><span class="lbl">월 목표 생활비 달성에 필요한 거치금 (세전)</span><span class="val final" id="divNeedPrincipal">0원</span></div>
+        <div class="row" style="margin-bottom:0;"><span class="lbl" style="font-size:0.82rem;">세후 기준 (배당소득세+종소세+건보료 감안)</span><span class="val" style="font-size:0.9rem;" id="divNeedAfterTax">0원</span></div>
       </div>
-
-      <div class="source-note">
-        역산 공식: 필요 초기투자금 = (목표금액 - 월적립 복리합산) ÷ (1+연수익률)^기간<br>
-        월 적립분이 목표를 초과하는 경우 초기 투자금 0원으로 표시됩니다.
-      </div>
+      <h3 style="margin-bottom:0.8rem;">📅 연도별 분배금 추이</h3>
+      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>수익률</th><th>거치금</th><th>세전 분배금</th><th>세전 월</th><th>세금합계</th><th>세후 월</th><th>충족</th></tr></thead><tbody id="divTableBody"></tbody></table></div>
+      <div style="position:relative;height:280px;width:100%;margin-top:2rem;"><canvas id="divChart"></canvas></div>
+      <div class="source-note" style="margin-top:1.5rem;">분배금은 전액 생활비로 소비(재투자 없음). 거치금은 주가수익률만큼 매년 변동. 배당소득세 15.4% 차감.</div>
     </div>
   </div>
 
 </div>
 
-  <!-- ===== 탭6: 배당 생활비 시뮬레이터 ===== -->
-  <div id="tab6" class="tab-content">
-    <p style="font-size:0.88rem;color:#6b7280;margin-bottom:1.5rem;background:#f8fafc;padding:12px;border-radius:8px;">
-      💡 배당/분배금을 <strong>전액 생활비로 소비</strong>할 때, 거치금 변화에 따른 연도별 분배금을 시뮬레이션합니다.
-    </p>
-    <div class="grid-2">
-      <div class="input-group">
-        <label>초기 거치금</label>
-        <div class="input-wrapper">
-          <input type="text" id="divInitial" value="500,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>배당/분배 수익률 (연)</label>
-        <div class="input-wrapper">
-          <input type="number" id="divYieldRate" value="8" step="0.1">
-          <span class="unit">%</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>월 목표 생활비</label>
-        <div class="input-wrapper">
-          <input type="text" id="divMonthlyGoal" value="3,000,000" oninput="fmtCur(this)">
-          <span class="unit">원</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>시뮬레이션 기간</label>
-        <div class="input-wrapper">
-          <input type="number" id="divYears" value="20">
-          <span class="unit">년</span>
-        </div>
-      </div>
-      <div class="input-group full">
-        <label>📐 연도별 주가 수익률 시나리오 (콤마로 구분, 반복 적용)</label>
-        <div class="input-wrapper" style="padding-right:0;">
-          <input type="text" id="divScenario" value="10, 5, -10, 15, 0, 8, -20, 12" style="padding-right:12px;text-align:left;">
-        </div>
-        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-          <button onclick="setScenario('bull')" style="padding:5px 10px;border:1px solid #bfdbfe;border-radius:6px;background:#eff6ff;color:#2563eb;font-size:0.78rem;font-weight:600;cursor:pointer;">📈 강세장</button>
-          <button onclick="setScenario('bear')" style="padding:5px 10px;border:1px solid #fecaca;border-radius:6px;background:#fff5f5;color:#dc2626;font-size:0.78rem;font-weight:600;cursor:pointer;">📉 약세장</button>
-          <button onclick="setScenario('flat')" style="padding:5px 10px;border:1px solid #e5e7eb;border-radius:6px;background:#f9fafb;color:#6b7280;font-size:0.78rem;font-weight:600;cursor:pointer;">➡️ 횡보장</button>
-          <button onclick="setScenario('volatile')" style="padding:5px 10px;border:1px solid #fde68a;border-radius:6px;background:#fffbeb;color:#d97706;font-size:0.78rem;font-weight:600;cursor:pointer;">🎢 변동장</button>
-          <button onclick="setScenario('crash')" style="padding:5px 10px;border:1px solid #fca5a5;border-radius:6px;background:#fef2f2;color:#dc2626;font-size:0.78rem;font-weight:600;cursor:pointer;">💥 폭락 포함</button>
-        </div>
-      </div>
-    </div>
-    <button class="calc-btn" onclick="calculateDiv()">분배금 시뮬레이션 🏦</button>
-
-    <div class="result-box" id="resultBox6">
-
-      <!-- 요약 카드 3개 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:1.5rem;">
-        <div class="reverse-item" style="background:#f0fdf4;border-color:#bbf7d0;">
-          <div class="ri-lbl">평균 연간 분배금</div>
-          <div class="ri-val" style="color:#059669;" id="divAvgAnnual">0원</div>
-        </div>
-        <div class="reverse-item" style="background:#eff6ff;border-color:#bfdbfe;">
-          <div class="ri-lbl">평균 월 분배금</div>
-          <div class="ri-val" style="color:#2563eb;" id="divAvgMonthly">0원</div>
-        </div>
-        <div class="reverse-item" style="background:#fffbeb;border-color:#fde68a;">
-          <div class="ri-lbl">생활비 충족률</div>
-          <div class="ri-val" style="color:#d97706;" id="divCoverRate">0%</div>
-        </div>
-      </div>
-
-      <!-- 생활비 충족 여부 배너 -->
-      <div id="divStatusBanner" style="border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;"></div>
-
-      <!-- 필요 거치금 역산 -->
-      <div class="summary-card" style="margin-bottom:1.5rem;">
-        <div class="row"><span class="lbl">월 목표 생활비 달성에 필요한 거치금</span><span class="val final" id="divNeedPrincipal">0원</span></div>
-        <div class="row" style="margin-bottom:0;"><span class="lbl" style="font-size:0.82rem;">세후 기준 (배당소득세 15.4% 차감 후)</span><span class="val" style="font-size:0.9rem;" id="divNeedAfterTax">0원</span></div>
-      </div>
-
-      <!-- 연도별 상세 테이블 -->
-      <h3 style="margin-bottom:0.8rem;">📅 연도별 분배금 추이</h3>
-      <div class="year-table-wrap">
-        <table class="year-table">
-          <thead>
-            <tr>
-              <th>연차</th>
-              <th>주가수익률</th>
-              <th>거치금</th>
-              <th>세전 분배금</th>
-              <th>세후 분배금</th>
-              <th>월 수령액</th>
-              <th>생활비 충족</th>
-            </tr>
-          </thead>
-          <tbody id="divTableBody"></tbody>
-        </table>
-      </div>
-
-      <!-- 차트 -->
-      <div style="position:relative;height:280px;width:100%;margin-top:2rem;">
-        <canvas id="divChart"></canvas>
-      </div>
-
-      <div class="source-note" style="margin-top:1.5rem;">
-        분배금은 전액 생활비로 소비(재투자 없음). 거치금은 주가수익률만큼 매년 변동.<br>
-        배당소득세 15.4% 차감. 금융소득 2천만원 초과 시 종합과세 미반영(단순 계산).
-      </div>
-    </div>
-  </div>
-
-
 <script>
-function switchTab(id, btn) {
-  document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(e) { e.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
 }
-
 function fmtCur(input) {
-  let cur = input.selectionStart;
-  let oldLen = input.value.length;
-  let raw = input.value.replace(/[^0-9]/g, '');
+  var cur = input.selectionStart;
+  var oldLen = input.value.length;
+  var raw = input.value.replace(/[^0-9]/g, '');
   input.value = raw ? parseInt(raw, 10).toLocaleString('ko-KR') : '';
-  let diff = input.value.length - oldLen;
+  var diff = input.value.length - oldLen;
   input.setSelectionRange(cur + diff, cur + diff);
 }
-
 function getNum(id) { return Number(document.getElementById(id).value.replace(/,/g, '')); }
 function won(n) { return Math.round(n).toLocaleString('ko-KR') + '원'; }
 
-/* ===== 탭1: 복리 시뮬레이션 ===== */
-let myChart = null;
+/* 탭1 */
+var myChart = null;
 function calculate() {
-  const initial = getNum('initialAmount');
-  const monthly = getNum('monthlyAmount');
-  const iGrowth = Number(document.getElementById('initialGrowthRate').value) / 100 / 12;
-  const mGrowth = Number(document.getElementById('monthlyGrowthRate').value) / 100 / 12;
-  const divYield = Number(document.getElementById('dividendYield').value) / 100 / 12;
-  const years = Number(document.getElementById('years').value);
-  const inflation = Number(document.getElementById('inflationRate').value) / 100;
-  const months = years * 12;
-
-  let initialPart = initial;
-  let monthlyPart = 0;
-  let totalPrincipal = initial;
-  let totalDivIncome = 0;
-
-  const labels = ['0년'];
-  const dataPoints = [initial];
-  const principalPoints = [initial];
-
-  for (let i = 1; i <= months; i++) {
-    let total = initialPart + monthlyPart;
-    let div = total * divYield;
+  var initial = getNum('initialAmount');
+  var monthly = getNum('monthlyAmount');
+  var iGrowth = Number(document.getElementById('initialGrowthRate').value) / 100 / 12;
+  var mGrowth = Number(document.getElementById('monthlyGrowthRate').value) / 100 / 12;
+  var divYield = Number(document.getElementById('dividendYield').value) / 100 / 12;
+  var years = Number(document.getElementById('years').value);
+  var inflation = Number(document.getElementById('inflationRate').value) / 100;
+  var months = years * 12;
+  var initialPart = initial, monthlyPart = 0, totalPrincipal = initial, totalDivIncome = 0;
+  var labels = ['0년'], dataPoints = [initial], principalPoints = [initial];
+  var yearlyData = [];
+  for (var i = 1; i <= months; i++) {
+    var total = initialPart + monthlyPart;
+    var div = total * divYield;
     totalDivIncome += div;
     initialPart = initialPart * (1 + iGrowth) + div * (initialPart / total || 0);
     monthlyPart = monthlyPart * (1 + mGrowth) + monthly + div * (monthlyPart / total || 0);
     totalPrincipal += monthly;
-    if (i % 12 === 0) {
-      labels.push((i / 12) + '년');
-      dataPoints.push(Math.round(initialPart + monthlyPart));
-      principalPoints.push(totalPrincipal);
-    }
+    if (i % 12 === 0) { labels.push((i/12)+'년'); dataPoints.push(Math.round(initialPart+monthlyPart)); principalPoints.push(totalPrincipal); yearlyData.push({yr:i/12,ip:initialPart,mp:monthlyPart,tp:totalPrincipal}); }
   }
-
-  const grossTotal = initialPart + monthlyPart;
-  const grossProfit = grossTotal - totalPrincipal;
-  const capitalGain = grossProfit - totalDivIncome;
-  const taxDiv = totalDivIncome * 0.154;
-  const taxableCap = Math.max(0, capitalGain - 2500000);
-  const taxCap = taxableCap * 0.22;
-  const totalTax = taxDiv + taxCap;
-  const netTotal = grossTotal - totalTax;
-
-  // 물가상승률 계산
-  const inflationFactor = Math.pow(1 + inflation, years);
-  const realValue = netTotal / inflationFactor;
-  const realReturn = ((realValue / totalPrincipal) - 1) * 100;
-
+  var grossTotal = initialPart + monthlyPart;
+  var grossProfit = grossTotal - totalPrincipal;
+  var capitalGain = grossProfit - totalDivIncome;
+  var taxDiv = totalDivIncome * 0.154;
+  var taxableCap = Math.max(0, capitalGain - 2500000);
+  var taxCap = taxableCap * 0.22;
+  var totalTax = taxDiv + taxCap;
+  var netTotal = grossTotal - totalTax;
+  var inflationFactor = Math.pow(1 + inflation, years);
+  var realValue = netTotal / inflationFactor;
+  var realReturn = ((realValue / totalPrincipal) - 1) * 100;
   document.getElementById('grossTotal').innerText = won(grossTotal);
   document.getElementById('totalPrincipal').innerText = won(totalPrincipal);
   document.getElementById('grossProfit').innerText = '+' + Math.round(grossProfit).toLocaleString('ko-KR') + '원';
@@ -777,448 +481,199 @@ function calculate() {
   document.getElementById('taxCapitalDetail').innerText = taxCap > 0 ? '-' + won(taxCap) : '0원 (공제 이내)';
   document.getElementById('taxTotalDetail').innerText = '-' + won(totalTax);
   document.getElementById('netTotal').innerText = won(netTotal);
-
-  // 물가 박스
   document.getElementById('infNominal').innerText = won(netTotal);
-  document.getElementById('infFactor').innerText = `연 ${inflation*100}% × ${years}년`;
-  document.getElementById('infMultiplier').innerText = `×${inflationFactor.toFixed(2)} (물가 ${((inflationFactor-1)*100).toFixed(1)}% 상승)`;
+  document.getElementById('infFactor').innerText = '연 '+(inflation*100)+'% × '+years+'년';
+  document.getElementById('infMultiplier').innerText = '×'+inflationFactor.toFixed(2)+' (물가 '+((inflationFactor-1)*100).toFixed(1)+'% 상승)';
   document.getElementById('infReal').innerText = won(realValue);
   document.getElementById('infRealReturn').innerText = (realReturn >= 0 ? '+' : '') + realReturn.toFixed(1) + '%';
-
+  var t1body = document.getElementById('tab1YearBody'); t1body.innerHTML = '';
+  for (var k = 0; k < yearlyData.length; k++) {
+    var d = yearlyData[k]; var tot = d.ip + d.mp; var prof = tot - d.tp;
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>'+d.yr+'년차</td><td>'+Math.round(d.ip).toLocaleString()+'원</td><td>'+Math.round(d.mp).toLocaleString()+'원</td><td style="color:var(--primary);font-weight:700;">'+Math.round(tot).toLocaleString()+'원</td><td>'+Math.round(d.tp).toLocaleString()+'원</td><td style="color:#059669;">+'+Math.round(prof).toLocaleString()+'원</td>';
+    t1body.appendChild(tr);
+  }
   document.getElementById('resultBox1').style.display = 'block';
   drawChart(labels, dataPoints, principalPoints);
 }
-
 function drawChart(labels, dataPoints, principalPoints) {
-  const ctx = document.getElementById('myChart').getContext('2d');
+  var ctx = document.getElementById('myChart').getContext('2d');
   if (myChart) myChart.destroy();
-  let grad = ctx.createLinearGradient(0, 0, 0, 400);
-  grad.addColorStop(0, 'rgba(37,99,235,0.5)');
-  grad.addColorStop(1, 'rgba(37,99,235,0.05)');
-  myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        { label: '세전 총 자산', data: dataPoints, borderColor: '#2563eb', backgroundColor: grad, fill: true, tension: 0.4, borderWidth: 3, pointRadius: 3 },
-        { label: '투자 원금', data: principalPoints, borderColor: '#9ca3af', borderDash: [5,5], fill: false, tension: 0.4, borderWidth: 2, pointRadius: 0 }
-      ]
-    },
-    options: { responsive: true, maintainAspectRatio: false }
-  });
+  var grad = ctx.createLinearGradient(0,0,0,400);
+  grad.addColorStop(0,'rgba(37,99,235,0.5)'); grad.addColorStop(1,'rgba(37,99,235,0.05)');
+  myChart = new Chart(ctx, {type:'line',data:{labels:labels,datasets:[{label:'세전 총 자산',data:dataPoints,borderColor:'#2563eb',backgroundColor:grad,fill:true,tension:0.4,borderWidth:3,pointRadius:3},{label:'투자 원금',data:principalPoints,borderColor:'#9ca3af',borderDash:[5,5],fill:false,tension:0.4,borderWidth:2,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false}});
 }
 
-/* ===== 탭2: 목표 달성 기간 ===== */
+/* 탭2 */
 function calculateGoal() {
-  const target = getNum('goalAmount');
-  const initial = getNum('goalInitial');
-  const monthly = getNum('goalMonthly');
-  const iRate = Number(document.getElementById('goalInitialReturn').value) / 100 / 12;
-  const mRate = Number(document.getElementById('goalMonthlyReturn').value) / 100 / 12;
-  const displayYears = Number(document.getElementById('goalYears').value) || 30;
-
-  if (target <= initial) { alert('목표 금액이 초기 투자금보다 커야 합니다.'); return; }
-
-  let iAcc = initial, mAcc = 0, goalMonths = -1;
-  const maxM = Math.max(1200, displayYears * 12);
-  for (let m = 1; m <= maxM; m++) {
-    iAcc = iAcc * (1 + iRate);
-    mAcc = mAcc * (1 + mRate) + monthly;
-    if (goalMonths < 0 && (iAcc + mAcc) >= target) goalMonths = m;
-  }
-
-  if (goalMonths > 0) {
-    const y = Math.floor(goalMonths / 12);
-    const mo = goalMonths % 12;
-    const totalInvested = initial + monthly * goalMonths;
-    document.getElementById('goalResultTime').innerText = `${y > 0 ? y + '년 ' : ''}${mo}개월`;
-    document.getElementById('goalResultText').innerText = `원금 총액: ${totalInvested.toLocaleString()}원 투입`;
-  } else {
-    document.getElementById('goalResultTime').innerText = `${displayYears}년 이내 미달성`;
-    document.getElementById('goalResultText').innerText = '';
-  }
-
-  const tbody = document.getElementById('yearTableBody');
-  tbody.innerHTML = '';
-  let iA = initial, mA = 0, prin = initial;
-  for (let yr = 1; yr <= displayYears; yr++) {
-    for (let mo2 = 0; mo2 < 12; mo2++) {
-      iA = iA * (1 + iRate);
-      mA = mA * (1 + mRate) + monthly;
-      prin += monthly;
-    }
-    const total = iA + mA;
-    const profit = total - prin;
-    const isGoalYear = goalMonths > 0 && yr === Math.ceil(goalMonths / 12);
-    const tr = document.createElement('tr');
-    if (isGoalYear) tr.style.cssText = 'background:#eff6ff;font-weight:700;';
-    tr.innerHTML = `
-      <td style="${isGoalYear ? 'color:var(--primary);' : ''}">${yr}년차${isGoalYear ? ' 🎯' : ''}</td>
-      <td>${Math.round(iA).toLocaleString()}원</td>
-      <td>${Math.round(mA).toLocaleString()}원</td>
-      <td style="color:var(--primary);font-weight:700;">${Math.round(total).toLocaleString()}원</td>
-      <td>${Math.round(prin).toLocaleString()}원</td>
-      <td style="color:#059669;">+${Math.round(profit).toLocaleString()}원</td>
-    `;
-    tbody.appendChild(tr);
-  }
-
-  document.getElementById('resultBox2').style.display = 'block';
+  var target=getNum('goalAmount'),initial=getNum('goalInitial'),monthly=getNum('goalMonthly');
+  var iRate=Number(document.getElementById('goalInitialReturn').value)/100/12;
+  var mRate=Number(document.getElementById('goalMonthlyReturn').value)/100/12;
+  var displayYears=Number(document.getElementById('goalYears').value)||30;
+  if(target<=initial){alert('목표 금액이 초기 투자금보다 커야 합니다.');return;}
+  var iAcc=initial,mAcc=0,goalMonths=-1;
+  var maxM=Math.max(1200,displayYears*12);
+  for(var m=1;m<=maxM;m++){iAcc=iAcc*(1+iRate);mAcc=mAcc*(1+mRate)+monthly;if(goalMonths<0&&(iAcc+mAcc)>=target)goalMonths=m;}
+  if(goalMonths>0){var y=Math.floor(goalMonths/12),mo=goalMonths%12;var ti=initial+monthly*goalMonths;document.getElementById('goalResultTime').innerText=(y>0?y+'년 ':'')+mo+'개월';document.getElementById('goalResultText').innerText='원금 총액: '+ti.toLocaleString()+'원 투입';}
+  else{document.getElementById('goalResultTime').innerText=displayYears+'년 이내 미달성';document.getElementById('goalResultText').innerText='';}
+  var tbody=document.getElementById('yearTableBody');tbody.innerHTML='';
+  var iA=initial,mA=0,prin=initial;
+  for(var yr=1;yr<=displayYears;yr++){for(var mo2=0;mo2<12;mo2++){iA=iA*(1+iRate);mA=mA*(1+mRate)+monthly;prin+=monthly;}
+  var total=iA+mA,profit=total-prin,isGoalYear=goalMonths>0&&yr===Math.ceil(goalMonths/12);
+  var tr=document.createElement('tr');if(isGoalYear)tr.style.cssText='background:#eff6ff;font-weight:700;';
+  tr.innerHTML='<td style="'+(isGoalYear?'color:var(--primary);':'')+'">'+yr+'년차'+(isGoalYear?' 🎯':'')+'</td><td>'+Math.round(iA).toLocaleString()+'원</td><td>'+Math.round(mA).toLocaleString()+'원</td><td style="color:var(--primary);font-weight:700;">'+Math.round(total).toLocaleString()+'원</td><td>'+Math.round(prin).toLocaleString()+'원</td><td style="color:#059669;">+'+Math.round(profit).toLocaleString()+'원</td>';
+  tbody.appendChild(tr);}
+  document.getElementById('resultBox2').style.display='block';
 }
 
-/* ===== 탭3: 종소세/건보료 ===== */
+/* 탭3 */
 function calculateTaxDetail() {
-  const income = getNum('targetIncome');
-  let basicDividendTax = income * 0.154;
-  let compTax = 0, healthIns = 0;
+  var income=getNum('targetIncome'),basicDividendTax=income*0.154,compTax=0,healthIns=0;
+  if(income>20000000){var exceed=income-20000000,exceedTax=0;
+  if(exceed<=14000000)exceedTax=exceed*0.06;else if(exceed<=50000000)exceedTax=840000+(exceed-14000000)*0.15;else if(exceed<=88000000)exceedTax=840000+5400000+(exceed-50000000)*0.24;else exceedTax=840000+5400000+9120000+(exceed-88000000)*0.35;
+  var minTax=exceed*0.14;compTax=Math.max(exceedTax,minTax)*1.1-exceed*0.154;if(compTax<0)compTax=0;healthIns=income*0.08;}
+  var totalDeduction=basicDividendTax+compTax+healthIns,netIncome=income-totalDeduction;
+  function rv(id,val,neg,fin){var pre=neg&&val>0?'-':'';var col=fin?'var(--primary)':neg?'#ef4444':'#6b7280';document.getElementById(id).innerHTML='<div style="text-align:right;line-height:1.4;"><div>'+pre+Math.round(val).toLocaleString()+'원</div><div style="font-size:0.75rem;color:'+col+';margin-top:2px;">(월 '+pre+Math.round(val/12).toLocaleString()+'원)</div></div>';}
+  rv('taxGross',income);rv('taxBasicDividend',basicDividendTax);rv('taxComp',compTax);rv('taxHealth',healthIns);rv('taxTotalDeduction',totalDeduction,true);rv('taxNet',netIncome,false,true);
+  document.getElementById('resultBox3').style.display='block';
+}
 
+/* 탭4 */
+var dcaChart=null;
+function calculateDCA() {
+  var totalFund=getNum('dcaTotalFund'),annualRate=Number(document.getElementById('dcaRate').value)/100;
+  var years=Number(document.getElementById('dcaYears').value),splitMonths=Number(document.getElementById('dcaSplitMonths').value);
+  var totalMonths=years*12,monthlyRate=annualRate/12;
+  if(splitMonths>=totalMonths){alert('분할 납입 기간이 전체 투자 기간보다 짧아야 합니다.');return;}
+  var lumpSum=totalFund*Math.pow(1+monthlyRate,totalMonths);
+  var monthly=totalFund/splitMonths,dcaAcc=0;
+  for(var m=1;m<=splitMonths;m++){dcaAcc+=monthly*Math.pow(1+monthlyRate,totalMonths-m+1);}
+  var lumpReturn=((lumpSum/totalFund)-1)*100,dcaReturn=((dcaAcc/totalFund)-1)*100;
+  document.getElementById('dcaLumpSum').innerText=won(lumpSum);
+  document.getElementById('dcaLumpReturn').innerText='수익률 +'+lumpReturn.toFixed(1)+'%';
+  document.getElementById('dcaDCA').innerText=won(dcaAcc);
+  document.getElementById('dcaDCAReturn').innerText='수익률 +'+dcaReturn.toFixed(1)+'%';
+  var lumpWins=lumpSum>=dcaAcc;
+  document.getElementById('dcaCard1').className='compare-card'+(lumpWins?' winner':'');
+  document.getElementById('dcaCard2').className='compare-card'+(!lumpWins?' winner':'');
+  var diff=Math.abs(lumpSum-dcaAcc),winnerName=lumpWins?'거치식':'DCA';
+  document.getElementById('dcaWinnerText').innerHTML='🏆 <strong>'+winnerName+'</strong>이 더 유리합니다';
+  document.getElementById('dcaDiffText').innerText='차이: '+won(diff)+' ('+Math.abs(lumpReturn-dcaReturn).toFixed(1)+'%p)';
+  var tbody=document.getElementById('dcaTableBody');tbody.innerHTML='';var labels=[],lumpData=[],dcaData=[];
+  for(var yr=1;yr<=years;yr++){var m2=yr*12;var lumpVal=totalFund*Math.pow(1+monthlyRate,m2);var dcaVal=0;
+  for(var i=1;i<=Math.min(splitMonths,m2);i++){dcaVal+=monthly*Math.pow(1+monthlyRate,m2-i+1);}
+  labels.push(yr+'년');lumpData.push(Math.round(lumpVal));dcaData.push(Math.round(dcaVal));
+  var diff2=lumpVal-dcaVal;var tr=document.createElement('tr');
+  tr.innerHTML='<td>'+yr+'년차</td><td style="color:var(--primary);font-weight:700;">'+Math.round(lumpVal).toLocaleString()+'원</td><td style="color:var(--green);font-weight:700;">'+Math.round(dcaVal).toLocaleString()+'원</td><td style="color:'+(diff2>=0?'var(--primary)':'var(--green)')+';">'+(diff2>=0?'+':'-')+Math.abs(Math.round(diff2)).toLocaleString()+'원</td>';
+  tbody.appendChild(tr);}
+  var ctx=document.getElementById('dcaChart').getContext('2d');if(dcaChart)dcaChart.destroy();
+  dcaChart=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:'거치식',data:lumpData,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.08)',fill:true,tension:0.4,borderWidth:3,pointRadius:3},{label:'DCA',data:dcaData,borderColor:'#059669',backgroundColor:'rgba(5,150,105,0.08)',fill:true,tension:0.4,borderWidth:3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false}});
+  document.getElementById('resultBox4').style.display='block';
+}
+
+/* 탭5 */
+function calculateReverse() {
+  var goal=getNum('revGoal'),years=Number(document.getElementById('revYears').value);
+  var rate=Number(document.getElementById('revRate').value)/100,monthly=getNum('revMonthly');
+  var inflation=Number(document.getElementById('revInflation').value)/100;
+  var monthlyRate=rate/12,totalMonths=years*12;
+  var monthlyFV=0;for(var m=1;m<=totalMonths;m++){monthlyFV+=monthly*Math.pow(1+monthlyRate,totalMonths-m+1);}
+  var remainingGoal=goal-monthlyFV,needInitial=Math.max(0,remainingGoal/Math.pow(1+rate,years));
+  var inflFactor=Math.pow(1+inflation,years),realGoal=goal/inflFactor;
+  var totalPrincipal=needInitial+monthly*totalMonths;
+  document.getElementById('revInitial').innerText=won(needInitial);
+  document.getElementById('revInitialSub').innerText=needInitial<=0?'✅ 월 적립만으로도 목표 달성 가능!':'+ 월 '+monthly.toLocaleString()+'원 적립 × '+years+'년';
+  document.getElementById('revGoalDisp').innerText=won(goal);
+  document.getElementById('revRealGoal').innerText=won(realGoal);
+  document.getElementById('revMonthlyContrib').innerText=won(Math.min(monthlyFV,goal));
+  document.getElementById('revTotalPrincipal').innerText=won(totalPrincipal);
+  var tbody=document.getElementById('revScenarioBody');tbody.innerHTML='';
+  [5,8,10,12,15,20,25,30].forEach(function(r){var mr=r/100/12;var mFV=0;
+  for(var m=1;m<=totalMonths;m++){mFV+=monthly*Math.pow(1+mr,totalMonths-m+1);}
+  var rem=goal-mFV,ni=Math.max(0,rem/Math.pow(1+r/100,years)),tp=ni+monthly*totalMonths;
+  var multiple=tp>0?(goal/tp).toFixed(1):'∞';
+  var isTarget=r===Number(document.getElementById('revRate').value);
+  var tr=document.createElement('tr');if(isTarget)tr.style.cssText='background:#eff6ff;font-weight:700;';
+  tr.innerHTML='<td style="'+(isTarget?'color:var(--primary);':'')+'">'+ r+'%'+(isTarget?' ✓':'')+'</td><td style="color:var(--primary);font-weight:700;">'+won(ni)+'</td><td>'+won(tp)+'</td><td style="color:var(--green);">×'+multiple+'</td>';
+  tbody.appendChild(tr);});
+  document.getElementById('resultBox5').style.display='block';
+}
+
+/* 탭6 */
+var divChart=null;
+function setScenario(type) {
+  var s={bull:'15, 20, 12, 18, 10, 25, 8, 15',bear:'-5, -10, 2, -8, 0, -15, 3, -5',flat:'2, 3, 1, 4, 2, 0, 3, 2',volatile:'20, -15, 30, -20, 25, -10, 15, -5',crash:'10, 8, -40, 5, 15, 12, -20, 10'};
+  document.getElementById('divScenario').value=s[type];
+}
+function calcDivTax(income) {
+  var divTax = income * 0.154;
+  var compTax = 0, healthIns = 0;
   if (income > 20000000) {
-    const exceed = income - 20000000;
-    let exceedTax = 0;
+    var exceed = income - 20000000; var exceedTax = 0;
     if (exceed <= 14000000) exceedTax = exceed * 0.06;
     else if (exceed <= 50000000) exceedTax = 840000 + (exceed - 14000000) * 0.15;
     else if (exceed <= 88000000) exceedTax = 840000 + 5400000 + (exceed - 50000000) * 0.24;
     else exceedTax = 840000 + 5400000 + 9120000 + (exceed - 88000000) * 0.35;
-    const minTax = exceed * 0.14;
+    var minTax = exceed * 0.14;
     compTax = Math.max(exceedTax, minTax) * 1.1 - exceed * 0.154;
     if (compTax < 0) compTax = 0;
     healthIns = income * 0.08;
   }
-
-  const totalDeduction = basicDividendTax + compTax + healthIns;
-  const netIncome = income - totalDeduction;
-
-  const rv = (id, val, neg=false, fin=false) => {
-    const pre = neg && val > 0 ? '-' : '';
-    const col = fin ? 'var(--primary)' : neg ? '#ef4444' : '#6b7280';
-    document.getElementById(id).innerHTML = `
-      <div style="text-align:right;line-height:1.4;">
-        <div>${pre}${Math.round(val).toLocaleString()}원</div>
-        <div style="font-size:0.75rem;color:${col};margin-top:2px;">(월 ${pre}${Math.round(val/12).toLocaleString()}원)</div>
-      </div>`;
-  };
-
-  rv('taxGross', income);
-  rv('taxBasicDividend', basicDividendTax);
-  rv('taxComp', compTax);
-  rv('taxHealth', healthIns);
-  rv('taxTotalDeduction', totalDeduction, true);
-  rv('taxNet', netIncome, false, true);
-  document.getElementById('resultBox3').style.display = 'block';
+  return {divTax: divTax, compTax: compTax, healthIns: healthIns, total: divTax + compTax + healthIns};
 }
-
-/* ===== 탭4: DCA vs 거치식 ===== */
-let dcaChart = null;
-function calculateDCA() {
-  const totalFund = getNum('dcaTotalFund');
-  const annualRate = Number(document.getElementById('dcaRate').value) / 100;
-  const years = Number(document.getElementById('dcaYears').value);
-  const splitMonths = Number(document.getElementById('dcaSplitMonths').value);
-  const totalMonths = years * 12;
-  const monthlyRate = annualRate / 12;
-
-  if (splitMonths >= totalMonths) {
-    alert('분할 납입 기간이 전체 투자 기간보다 짧아야 합니다.');
-    return;
-  }
-
-  // 거치식: 첫날 전액 투자
-  const lumpSum = totalFund * Math.pow(1 + monthlyRate, totalMonths);
-
-  // DCA: 첫 splitMonths개월 동안 균등 분할 납입
-  const monthly = totalFund / splitMonths;
-  let dcaAcc = 0;
-  for (let m = 1; m <= splitMonths; m++) {
-    // 납입 후 남은 기간 복리
-    const remaining = totalMonths - m + 1;
-    dcaAcc += monthly * Math.pow(1 + monthlyRate, remaining);
-  }
-
-  const lumpReturn = ((lumpSum / totalFund) - 1) * 100;
-  const dcaReturn = ((dcaAcc / totalFund) - 1) * 100;
-
-  document.getElementById('dcaLumpSum').innerText = won(lumpSum);
-  document.getElementById('dcaLumpReturn').innerText = `수익률 +${lumpReturn.toFixed(1)}%`;
-  document.getElementById('dcaDCA').innerText = won(dcaAcc);
-  document.getElementById('dcaDCAReturn').innerText = `수익률 +${dcaReturn.toFixed(1)}%`;
-
-  const lumpWins = lumpSum >= dcaAcc;
-  document.getElementById('dcaCard1').className = 'compare-card' + (lumpWins ? ' winner' : '');
-  document.getElementById('dcaCard2').className = 'compare-card' + (!lumpWins ? ' winner' : '');
-
-  const diff = Math.abs(lumpSum - dcaAcc);
-  const winnerName = lumpWins ? '거치식' : 'DCA';
-  document.getElementById('dcaWinnerText').innerHTML = `🏆 <strong>${winnerName}</strong>이 더 유리합니다`;
-  document.getElementById('dcaDiffText').innerText = `차이: ${won(diff)} (${Math.abs(lumpReturn - dcaReturn).toFixed(1)}%p)`;
-
-  // 연도별 테이블
-  const tbody = document.getElementById('dcaTableBody');
-  tbody.innerHTML = '';
-  const labels = [];
-  const lumpData = [], dcaData = [];
-
-  for (let yr = 1; yr <= years; yr++) {
-    const m = yr * 12;
-    const lumpVal = totalFund * Math.pow(1 + monthlyRate, m);
-
-    let dcaVal = 0;
-    for (let i = 1; i <= Math.min(splitMonths, m); i++) {
-      const rem = m - i + 1;
-      dcaVal += monthly * Math.pow(1 + monthlyRate, rem);
-    }
-
-    labels.push(yr + '년');
-    lumpData.push(Math.round(lumpVal));
-    dcaData.push(Math.round(dcaVal));
-
-    const diff2 = lumpVal - dcaVal;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${yr}년차</td>
-      <td style="color:var(--primary);font-weight:700;">${Math.round(lumpVal).toLocaleString()}원</td>
-      <td style="color:var(--green);font-weight:700;">${Math.round(dcaVal).toLocaleString()}원</td>
-      <td style="color:${diff2>=0?'var(--primary)':'var(--green)'};">${diff2>=0?'+':'-'}${Math.abs(Math.round(diff2)).toLocaleString()}원</td>
-    `;
-    tbody.appendChild(tr);
-  }
-
-  // 차트
-  const ctx = document.getElementById('dcaChart').getContext('2d');
-  if (dcaChart) dcaChart.destroy();
-  dcaChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        { label: '거치식', data: lumpData, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.08)', fill: true, tension: 0.4, borderWidth: 3, pointRadius: 3 },
-        { label: 'DCA', data: dcaData, borderColor: '#059669', backgroundColor: 'rgba(5,150,105,0.08)', fill: true, tension: 0.4, borderWidth: 3, pointRadius: 3 }
-      ]
-    },
-    options: { responsive: true, maintainAspectRatio: false }
-  });
-
-  document.getElementById('resultBox4').style.display = 'block';
-}
-
-/* ===== 탭5: 목표금액 역산 ===== */
-function calculateReverse() {
-  const goal = getNum('revGoal');
-  const years = Number(document.getElementById('revYears').value);
-  const rate = Number(document.getElementById('revRate').value) / 100;
-  const monthly = getNum('revMonthly');
-  const inflation = Number(document.getElementById('revInflation').value) / 100;
-  const monthlyRate = rate / 12;
-  const totalMonths = years * 12;
-
-  // 월 적립분의 미래 가치 계산
-  let monthlyFV = 0;
-  for (let m = 1; m <= totalMonths; m++) {
-    monthlyFV += monthly * Math.pow(1 + monthlyRate, totalMonths - m + 1);
-  }
-
-  // 초기 투자금 역산
-  const remainingGoal = goal - monthlyFV;
-  const needInitial = Math.max(0, remainingGoal / Math.pow(1 + rate, years));
-
-  // 실질 목표 (물가 반영)
-  const inflFactor = Math.pow(1 + inflation, years);
-  const realGoal = goal / inflFactor;
-
-  const totalPrincipal = needInitial + monthly * totalMonths;
-
-  document.getElementById('revInitial').innerText = won(needInitial);
-  document.getElementById('revInitialSub').innerText = needInitial <= 0
-    ? '✅ 월 적립만으로도 목표 달성 가능!'
-    : `+ 월 ${monthly.toLocaleString()}원 적립 × ${years}년`;
-  document.getElementById('revGoalDisp').innerText = won(goal);
-  document.getElementById('revRealGoal').innerText = won(realGoal);
-  document.getElementById('revMonthlyContrib').innerText = won(Math.min(monthlyFV, goal));
-  document.getElementById('revTotalPrincipal').innerText = won(totalPrincipal);
-
-  // 시나리오 테이블 (수익률 5%~30%)
-  const tbody = document.getElementById('revScenarioBody');
-  tbody.innerHTML = '';
-  const scenarios = [5, 8, 10, 12, 15, 20, 25, 30];
-  scenarios.forEach(r => {
-    const mr = r / 100 / 12;
-    let mFV = 0;
-    for (let m = 1; m <= totalMonths; m++) {
-      mFV += monthly * Math.pow(1 + mr, totalMonths - m + 1);
-    }
-    const rem = goal - mFV;
-    const ni = Math.max(0, rem / Math.pow(1 + r / 100, years));
-    const tp = ni + monthly * totalMonths;
-    const multiple = tp > 0 ? (goal / tp).toFixed(1) : '∞';
-    const isTarget = r === Number(document.getElementById('revRate').value);
-    const tr = document.createElement('tr');
-    if (isTarget) tr.style.cssText = 'background:#eff6ff;font-weight:700;';
-    tr.innerHTML = `
-      <td style="${isTarget ? 'color:var(--primary);' : ''}">${r}%${isTarget ? ' ✓' : ''}</td>
-      <td style="color:var(--primary);font-weight:700;">${won(ni)}</td>
-      <td>${won(tp)}</td>
-      <td style="color:var(--green);">×${multiple}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  document.getElementById('resultBox5').style.display = 'block';
-}
-
-/* ===== 탭6: 배당 생활비 시뮬레이터 ===== */
-let divChart = null;
-
-function setScenario(type) {
-  const scenarios = {
-    bull:     '15, 20, 12, 18, 10, 25, 8, 15',
-    bear:     '-5, -10, 2, -8, 0, -15, 3, -5',
-    flat:     '2, 3, 1, 4, 2, 0, 3, 2',
-    volatile: '20, -15, 30, -20, 25, -10, 15, -5',
-    crash:    '10, 8, -40, 5, 15, 12, -20, 10'
-  };
-  document.getElementById('divScenario').value = scenarios[type];
-}
-
 function calculateDiv() {
-  const initial   = getNum('divInitial');
-  const yieldRate = Number(document.getElementById('divYieldRate').value) / 100;
-  const monthlyGoal = getNum('divMonthlyGoal');
-  const years     = Number(document.getElementById('divYears').value);
-  const scenarioRaw = document.getElementById('divScenario').value;
-  const scenarioArr = scenarioRaw.split(',').map(s => parseFloat(s.trim()) / 100).filter(n => !isNaN(n));
-  if (!scenarioArr.length) { alert('수익률 시나리오를 입력해주세요.'); return; }
-
-  const annualGoal = monthlyGoal * 12;
-  // 세전 필요 거치금 (배당률 기준)
-  const needPrincipal = annualGoal / yieldRate;
-  // 세후 기준 (15.4% 차감 후 annualGoal이 되려면)
-  const needAfterTax = annualGoal / (yieldRate * (1 - 0.154));
-
-  document.getElementById('divNeedPrincipal').innerText = won(needPrincipal);
-  document.getElementById('divNeedAfterTax').innerText = won(needAfterTax);
-
-  let principal = initial;
-  let totalAfterTaxDiv = 0;
-  let coverYears = 0;
-  const tbody = document.getElementById('divTableBody');
-  tbody.innerHTML = '';
-
-  const chartLabels = [];
-  const chartGross = [];
-  const chartNet = [];
-  const chartGoal = [];
-
-  for (let yr = 1; yr <= years; yr++) {
-    const rate = scenarioArr[(yr - 1) % scenarioArr.length];
-    const grossDiv = principal * yieldRate;
-    const tax = grossDiv * 0.154;
-    const netDiv = grossDiv - tax;
-    const monthlyNet = netDiv / 12;
-    const covered = netDiv >= annualGoal;
-    if (covered) coverYears++;
-    totalAfterTaxDiv += netDiv;
-
-    chartLabels.push(yr + '년');
-    chartGross.push(Math.round(grossDiv));
-    chartNet.push(Math.round(netDiv));
-    chartGoal.push(Math.round(annualGoal));
-
-    const rateColor = rate >= 0 ? '#059669' : '#dc2626';
-    const rateStr = (rate >= 0 ? '+' : '') + (rate * 100).toFixed(1) + '%';
-    const coverEmoji = covered ? '✅' : '❌';
-    const coverColor = covered ? '#059669' : '#dc2626';
-
-    const tr = document.createElement('tr');
-    if (!covered) tr.style.background = '#fff5f5';
-    tr.innerHTML = \`
-      <td>\${yr}년차</td>
-      <td style="color:\${rateColor};font-weight:700;">\${rateStr}</td>
-      <td>\${Math.round(principal).toLocaleString()}원</td>
-      <td>\${Math.round(grossDiv).toLocaleString()}원</td>
-      <td style="color:#2563eb;font-weight:700;">\${Math.round(netDiv).toLocaleString()}원</td>
-      <td style="font-weight:700;">\${Math.round(monthlyNet).toLocaleString()}원</td>
-      <td style="color:\${coverColor};font-weight:700;">\${coverEmoji}</td>
-    \`;
+  var initial=getNum('divInitial'),yieldRate=Number(document.getElementById('divYieldRate').value)/100;
+  var monthlyGoal=getNum('divMonthlyGoal'),years=Number(document.getElementById('divYears').value);
+  var scenarioRaw=document.getElementById('divScenario').value;
+  var scenarioArr=scenarioRaw.split(',').map(function(s){return parseFloat(s.trim())/100;}).filter(function(n){return !isNaN(n);});
+  if(!scenarioArr.length){alert('수익률 시나리오를 입력해주세요.');return;}
+  var annualGoal=monthlyGoal*12;
+  var needPrincipal=annualGoal/yieldRate;
+  // 세후 필요 거치금: 역산 (종소세+건보료 포함)
+  var testP=needPrincipal,found=false;
+  for(var t=0;t<50;t++){var testInc=testP*yieldRate;var testTax=calcDivTax(testInc);var testNet=testInc-testTax.total;if(Math.abs(testNet-annualGoal)<1000){found=true;break;}testP=testP*(annualGoal/testNet);}
+  document.getElementById('divNeedPrincipal').innerText=won(needPrincipal);
+  document.getElementById('divNeedAfterTax').innerText=won(found?testP:needPrincipal*1.3);
+  var principal=initial,totalNetDiv=0,totalGrossDiv=0,totalTaxSum=0,coverYears=0;
+  var tbody=document.getElementById('divTableBody');tbody.innerHTML='';
+  var chartLabels=[],chartNet=[],chartGoal=[];
+  for(var yr=1;yr<=years;yr++){
+    var rate=scenarioArr[(yr-1)%scenarioArr.length];
+    var grossDiv=principal*yieldRate;
+    var taxes=calcDivTax(grossDiv);
+    var netDiv=grossDiv-taxes.total;
+    var grossMonthly=grossDiv/12;
+    var monthlyNet=netDiv/12;
+    var covered=netDiv>=annualGoal;
+    if(covered)coverYears++;
+    totalNetDiv+=netDiv; totalGrossDiv+=grossDiv; totalTaxSum+=taxes.total;
+    chartLabels.push(yr+'년');chartNet.push(Math.round(netDiv));chartGoal.push(Math.round(annualGoal));
+    var rateColor=rate>=0?'#059669':'#dc2626';
+    var rateStr=(rate>=0?'+':'')+(rate*100).toFixed(1)+'%';
+    var coverEmoji=covered?'✅':'❌';var coverColor=covered?'#059669':'#dc2626';
+    var tr=document.createElement('tr');if(!covered)tr.style.background='#fff5f5';
+    tr.innerHTML='<td>'+yr+'년차</td><td style="color:'+rateColor+';font-weight:700;">'+rateStr+'</td><td>'+Math.round(principal).toLocaleString()+'원</td><td>'+Math.round(grossDiv).toLocaleString()+'원</td><td>'+Math.round(grossMonthly).toLocaleString()+'원</td><td style="color:#dc2626;">'+Math.round(taxes.total).toLocaleString()+'원</td><td style="color:#2563eb;font-weight:700;">'+Math.round(monthlyNet).toLocaleString()+'원</td><td style="color:'+coverColor+';font-weight:700;">'+coverEmoji+'</td>';
     tbody.appendChild(tr);
-
-    // 다음 연도 거치금 = 주가 수익률만 반영 (분배금은 소비)
-    principal = principal * (1 + rate);
+    principal=principal*(1+rate);
   }
-
-  const avgAnnual = totalAfterTaxDiv / years;
-  const avgMonthly = avgAnnual / 12;
-  const coverRate = (coverYears / years * 100).toFixed(0);
-
-  document.getElementById('divAvgAnnual').innerText = won(avgAnnual);
-  document.getElementById('divAvgMonthly').innerText = won(avgMonthly);
-  document.getElementById('divCoverRate').innerText = coverRate + '%';
-
-  // 배너
-  const banner = document.getElementById('divStatusBanner');
-  if (Number(coverRate) >= 80) {
-    banner.style.cssText = 'border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#f0fdf4;border:2px solid #86efac;color:#059669;';
-    banner.innerText = \`✅ \${coverRate}% 기간 동안 생활비 충족! 안정적인 배당 생활 가능합니다.\`;
-  } else if (Number(coverRate) >= 50) {
-    banner.style.cssText = 'border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#fffbeb;border:2px solid #fde68a;color:#d97706;';
-    banner.innerText = \`⚠️ \${coverRate}% 기간만 생활비 충족. 거치금 확대 또는 지출 절감이 필요합니다.\`;
-  } else {
-    banner.style.cssText = 'border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#fff5f5;border:2px solid #fecaca;color:#dc2626;';
-    banner.innerText = \`🚨 \${coverRate}% 기간만 충족. 현재 거치금으로는 배당 생활이 불안정합니다.\`;
-  }
-
-  // 차트
-  const ctx = document.getElementById('divChart').getContext('2d');
-  if (divChart) divChart.destroy();
-  divChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: chartLabels,
-      datasets: [
-        { label: '세후 분배금', data: chartNet, backgroundColor: 'rgba(37,99,235,0.7)', borderRadius: 4, order: 1 },
-        { label: '목표 생활비', data: chartGoal, type: 'line', borderColor: '#ef4444', borderWidth: 2, borderDash: [5,4], pointRadius: 0, fill: false, order: 0 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: 'top' } },
-      scales: { y: { ticks: { callback: v => (v/10000000).toFixed(0) + '천만' } } }
-    }
-  });
-
-  document.getElementById('resultBox6').style.display = 'block';
+  var avgGross=totalGrossDiv/years; var avgNet=totalNetDiv/years; var avgTax=totalTaxSum/years;
+  var coverRate=(coverYears/years*100).toFixed(0);
+  document.getElementById('divAvgGrossMonthly').innerText=won(avgGross/12);
+  document.getElementById('divAvgMonthly').innerText=won(avgNet/12);
+  document.getElementById('divAvgAnnual').innerText=won(avgGross);
+  document.getElementById('divAvgTax').innerText=won(avgTax);
+  document.getElementById('divCoverRate').innerText=coverRate+'%';
+  var banner=document.getElementById('divStatusBanner');
+  if(Number(coverRate)>=80){banner.style.cssText='border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#f0fdf4;border:2px solid #86efac;color:#059669;';banner.innerText='✅ '+coverRate+'% 기간 동안 생활비 충족! 안정적인 배당 생활 가능합니다.';}
+  else if(Number(coverRate)>=50){banner.style.cssText='border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#fffbeb;border:2px solid #fde68a;color:#d97706;';banner.innerText='⚠️ '+coverRate+'% 기간만 생활비 충족. 거치금 확대 또는 지출 절감이 필요합니다.';}
+  else{banner.style.cssText='border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-weight:700;font-size:0.95rem;text-align:center;background:#fff5f5;border:2px solid #fecaca;color:#dc2626;';banner.innerText='🚨 '+coverRate+'% 기간만 충족. 현재 거치금으로는 배당 생활이 불안정합니다.';}
+  var ctx=document.getElementById('divChart').getContext('2d');if(divChart)divChart.destroy();
+  divChart=new Chart(ctx,{type:'bar',data:{labels:chartLabels,datasets:[{label:'세후 분배금',data:chartNet,backgroundColor:'rgba(37,99,235,0.7)',borderRadius:4,order:1},{label:'목표 생활비',data:chartGoal,type:'line',borderColor:'#ef4444',borderWidth:2,borderDash:[5,4],pointRadius:0,fill:false,order:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{ticks:{callback:function(v){return (v/10000000).toFixed(0)+'천만';}}}}}});
+  document.getElementById('resultBox6').style.display='block';
 }
 
+/* SW */
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./service-worker.js',{scope:'./'});});}
 </script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js', {scope: './'})
-      .then(reg => {
-        reg.addEventListener('updatefound', () => {
-          const newSW = reg.installing;
-          newSW.addEventListener('statechange', () => {
-            if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-              showUpdateToast();
-            }
-          });
-        });
-      });
-  });
-}
-function showUpdateToast() {
-  const toast = document.createElement('div');
-  toast.innerHTML = '🔄 새 버전이 있어요! <button onclick="location.reload()" style="margin-left:10px;background:white;color:#2563eb;border:none;border-radius:6px;padding:4px 10px;font-weight:700;cursor:pointer;">새로고침</button>';
-  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1d4ed8;color:white;padding:14px 20px;border-radius:12px;font-size:0.9rem;font-weight:600;z-index:9999;box-shadow:0 8px 24px rgba(29,78,216,0.4);animation:swToast 0.3s ease;';
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 8000);
-}
-</script>
-<style>
-@keyframes swToast {
-  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
-  to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
-}
-</style>
 </body>
 </html>
