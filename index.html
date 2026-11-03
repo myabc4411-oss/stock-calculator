@@ -148,6 +148,19 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
 .scenario-btn {
   padding:5px 10px; border-radius:6px; font-size:0.78rem; font-weight:600; cursor:pointer;
 }
+.seg-box { background:#f8fafc; border:1px dashed #bfdbfe; border-radius:12px; padding:12px; }
+.seg-title { font-size:0.82rem; font-weight:700; color:#4b5563; margin-bottom:4px; }
+.seg-hint { font-size:0.75rem; color:#9ca3af; margin-bottom:10px; line-height:1.4; }
+.seg-row { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px; font-size:0.85rem; color:#4b5563; }
+.seg-row input[type="number"], .seg-row input[type="text"] {
+  width:62px; padding:8px; padding-right:8px; font-size:0.9rem; border-radius:8px; text-align:center;
+}
+.seg-row input.seg-amt { width:130px; text-align:right; }
+.seg-del { border:none; background:#fee2e2; color:#dc2626; border-radius:6px; padding:6px 9px; cursor:pointer; font-weight:700; }
+.seg-add {
+  width:100%; padding:9px; border:1px solid #bfdbfe; background:#eff6ff; color:var(--primary);
+  border-radius:8px; font-weight:600; font-size:0.85rem; cursor:pointer;
+}
 @media (max-width: 480px) {
   .grid-2 { grid-template-columns: 1fr; }
   .input-group.full { grid-column: span 1; }
@@ -228,6 +241,14 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         </div>
       </div>
       <div class="input-group full">
+        <div class="seg-box">
+          <div class="seg-title">🔀 적립금 변경 구간 (선택)</div>
+          <div class="seg-hint">위 "매월 적립금액"으로 시작하고, 아래 시점부터 월 적립금이 바뀝니다. 예) 3년 0개월 후부터 월 1,500,000원 → 4년차부터 150만원. 0원을 넣으면 적립 중단입니다.</div>
+          <div id="segs1"></div>
+          <button type="button" class="seg-add" onclick="addSeg('segs1')">＋ 구간 추가</button>
+        </div>
+      </div>
+      <div class="input-group full">
         <label>📉 물가상승률 (연) <span style="font-size:0.78rem;color:#9ca3af;font-weight:400;">— 실질 구매력 기준 수익 계산용</span></label>
         <div class="input-wrapper">
           <input type="number" id="inflationRate" value="3">
@@ -281,7 +302,7 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
         4. 거치금과 적립금은 각각 다른 수익률로 별도 복리 계산됩니다.
       </div>
       <h3 style="margin-bottom:0.8rem;margin-top:1.5rem;">📅 연도별 자산 추이</h3>
-      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>거치금 자산</th><th>적립금 자산</th><th>총 자산</th><th>누적 원금</th><th>수익</th></tr></thead><tbody id="tab1YearBody"></tbody></table></div>
+      <div class="year-table-wrap"><table class="year-table"><thead><tr><th>연차</th><th>거치금 자산</th><th>적립금 자산</th><th>총 자산</th><th>누적 원금</th><th>수익</th><th>월 적립액</th></tr></thead><tbody id="tab1YearBody"></tbody></table></div>
       <div style="position:relative;height:300px;width:100%;margin-top:2rem;"><canvas id="myChart"></canvas></div>
     </div>
   </div>
@@ -294,6 +315,14 @@ input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235
       <div class="input-group"><label>초기 투자금 기대 수익률(연)</label><div class="input-wrapper"><input type="number" id="goalInitialReturn" value="10"><span class="unit">%</span></div></div>
       <div class="input-group"><label>매월 적립금액</label><div class="input-wrapper"><input type="text" id="goalMonthly" value="1,000,000" oninput="fmtCur(this)"><span class="unit">원</span></div></div>
       <div class="input-group"><label>매월 적립금 기대 수익률(연)</label><div class="input-wrapper"><input type="number" id="goalMonthlyReturn" value="20"><span class="unit">%</span></div></div>
+      <div class="input-group full">
+        <div class="seg-box">
+          <div class="seg-title">🔀 적립금 변경 구간 (선택)</div>
+          <div class="seg-hint">위 "매월 적립금액"으로 시작하고, 아래 시점부터 월 적립금이 바뀝니다. 0원을 넣으면 적립 중단입니다.</div>
+          <div id="segs2"></div>
+          <button type="button" class="seg-add" onclick="addSeg('segs2')">＋ 구간 추가</button>
+        </div>
+      </div>
       <div class="input-group full"><label>목표 기간 (연도별 상세 표시 기준)</label><div class="input-wrapper"><input type="number" id="goalYears" value="20"><span class="unit">년</span></div></div>
     </div>
     <button class="calc-btn" onclick="calculateGoal()">도달 시간 계산하기 ⏳</button>
@@ -467,6 +496,39 @@ function fmtCur(input) {
 function getNum(id) { return Number(document.getElementById(id).value.replace(/,/g, '')); }
 function won(n) { return Math.round(n).toLocaleString('ko-KR') + '원'; }
 
+/* 적립금 구간 설정 (탭1, 탭2 공용) */
+function addSeg(cid, y, mo, amt) {
+  var wrap = document.getElementById(cid);
+  var row = document.createElement('div');
+  row.className = 'seg-row';
+  var amtTxt = (amt === undefined || amt === null || amt === '') ? '' : Number(amt).toLocaleString('ko-KR');
+  row.innerHTML = '<input type="number" class="seg-y" min="0" value="' + (y || 0) + '"><span>년</span>' +
+    '<input type="number" class="seg-m" min="0" max="11" value="' + (mo || 0) + '"><span>개월 후부터 월</span>' +
+    '<input type="text" class="seg-amt" value="' + amtTxt + '" placeholder="1,500,000" oninput="fmtCur(this)"><span>원</span>' +
+    '<button type="button" class="seg-del" onclick="this.parentNode.remove()">✕</button>';
+  wrap.appendChild(row);
+}
+function getSchedule(cid, base) {
+  var sched = [{start: 0, amt: base}];
+  var rows = document.getElementById(cid).querySelectorAll('.seg-row');
+  for (var r = 0; r < rows.length; r++) {
+    var y = Number(rows[r].querySelector('.seg-y').value) || 0;
+    var mo = Number(rows[r].querySelector('.seg-m').value) || 0;
+    var txt = rows[r].querySelector('.seg-amt').value.replace(/,/g, '');
+    if (txt === '') continue;
+    sched.push({start: Math.max(0, y * 12 + mo), amt: Number(txt)});
+  }
+  sched.sort(function(a, b) { return a.start - b.start; });
+  return sched;
+}
+function amountAt(sched, i) {
+  var amt = sched[0].amt;
+  for (var s = 0; s < sched.length; s++) {
+    if (sched[s].start <= i - 1) amt = sched[s].amt;
+  }
+  return amt;
+}
+
 /* 탭1 */
 var myChart = null;
 function calculate() {
@@ -481,14 +543,16 @@ function calculate() {
   var initialPart = initial, monthlyPart = 0, totalPrincipal = initial, totalDivIncome = 0;
   var labels = ['0년'], dataPoints = [initial], principalPoints = [initial];
   var yearlyData = [];
+  var sched1 = getSchedule('segs1', monthly);
   for (var i = 1; i <= months; i++) {
+    var amt = amountAt(sched1, i);
     var total = initialPart + monthlyPart;
     var div = total * divYield;
     totalDivIncome += div;
     initialPart = initialPart * (1 + iGrowth) + div * (initialPart / total || 0);
-    monthlyPart = monthlyPart * (1 + mGrowth) + monthly + div * (monthlyPart / total || 0);
-    totalPrincipal += monthly;
-    if (i % 12 === 0) { labels.push((i/12)+'년'); dataPoints.push(Math.round(initialPart+monthlyPart)); principalPoints.push(totalPrincipal); yearlyData.push({yr:i/12,ip:initialPart,mp:monthlyPart,tp:totalPrincipal}); }
+    monthlyPart = monthlyPart * (1 + mGrowth) + amt + div * (monthlyPart / total || 0);
+    totalPrincipal += amt;
+    if (i % 12 === 0) { labels.push((i/12)+'년'); dataPoints.push(Math.round(initialPart+monthlyPart)); principalPoints.push(totalPrincipal); yearlyData.push({yr:i/12,ip:initialPart,mp:monthlyPart,tp:totalPrincipal,amt:amt}); }
   }
   var grossTotal = initialPart + monthlyPart;
   var grossProfit = grossTotal - totalPrincipal;
@@ -519,7 +583,7 @@ function calculate() {
   for (var k = 0; k < yearlyData.length; k++) {
     var d = yearlyData[k]; var tot = d.ip + d.mp; var prof = tot - d.tp;
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>'+d.yr+'년차</td><td>'+Math.round(d.ip).toLocaleString()+'원</td><td>'+Math.round(d.mp).toLocaleString()+'원</td><td style="color:var(--primary);font-weight:700;">'+Math.round(tot).toLocaleString()+'원</td><td>'+Math.round(d.tp).toLocaleString()+'원</td><td style="color:#059669;">+'+Math.round(prof).toLocaleString()+'원</td>';
+    tr.innerHTML = '<td>'+d.yr+'년차</td><td>'+Math.round(d.ip).toLocaleString()+'원</td><td>'+Math.round(d.mp).toLocaleString()+'원</td><td style="color:var(--primary);font-weight:700;">'+Math.round(tot).toLocaleString()+'원</td><td>'+Math.round(d.tp).toLocaleString()+'원</td><td style="color:#059669;">+'+Math.round(prof).toLocaleString()+'원</td><td style="color:#6b7280;">'+Math.round(d.amt).toLocaleString()+'원</td>';
     t1body.appendChild(tr);
   }
   document.getElementById('resultBox1').style.display = 'block';
@@ -540,14 +604,15 @@ function calculateGoal() {
   var mRate=Number(document.getElementById('goalMonthlyReturn').value)/100/12;
   var displayYears=Number(document.getElementById('goalYears').value)||30;
   if(target<=initial){alert('목표 금액이 초기 투자금보다 커야 합니다.');return;}
-  var iAcc=initial,mAcc=0,goalMonths=-1;
+  var sched2=getSchedule('segs2',monthly);
+  var iAcc=initial,mAcc=0,goalMonths=-1,cumInvest=0,cumAtGoal=0;
   var maxM=Math.max(1200,displayYears*12);
-  for(var m=1;m<=maxM;m++){iAcc=iAcc*(1+iRate);mAcc=mAcc*(1+mRate)+monthly;if(goalMonths<0&&(iAcc+mAcc)>=target)goalMonths=m;}
-  if(goalMonths>0){var y=Math.floor(goalMonths/12),mo=goalMonths%12;var ti=initial+monthly*goalMonths;document.getElementById('goalResultTime').innerText=(y>0?y+'년 ':'')+mo+'개월';document.getElementById('goalResultText').innerText='원금 총액: '+ti.toLocaleString()+'원 투입';}
+  for(var m=1;m<=maxM;m++){var amt1=amountAt(sched2,m);cumInvest+=amt1;iAcc=iAcc*(1+iRate);mAcc=mAcc*(1+mRate)+amt1;if(goalMonths<0&&(iAcc+mAcc)>=target){goalMonths=m;cumAtGoal=cumInvest;}}
+  if(goalMonths>0){var y=Math.floor(goalMonths/12),mo=goalMonths%12;var ti=initial+cumAtGoal;document.getElementById('goalResultTime').innerText=(y>0?y+'년 ':'')+mo+'개월';document.getElementById('goalResultText').innerText='원금 총액: '+ti.toLocaleString()+'원 투입';}
   else{document.getElementById('goalResultTime').innerText=displayYears+'년 이내 미달성';document.getElementById('goalResultText').innerText='';}
   var tbody=document.getElementById('yearTableBody');tbody.innerHTML='';
   var iA=initial,mA=0,prin=initial;
-  for(var yr=1;yr<=displayYears;yr++){for(var mo2=0;mo2<12;mo2++){iA=iA*(1+iRate);mA=mA*(1+mRate)+monthly;prin+=monthly;}
+  for(var yr=1;yr<=displayYears;yr++){for(var mo2=0;mo2<12;mo2++){var amt2=amountAt(sched2,(yr-1)*12+mo2+1);iA=iA*(1+iRate);mA=mA*(1+mRate)+amt2;prin+=amt2;}
   var total=iA+mA,profit=total-prin,isGoalYear=goalMonths>0&&yr===Math.ceil(goalMonths/12);
   var tr=document.createElement('tr');if(isGoalYear)tr.style.cssText='background:#eff6ff;font-weight:700;';
   tr.innerHTML='<td style="'+(isGoalYear?'color:var(--primary);':'')+'">'+yr+'년차'+(isGoalYear?' 🎯':'')+'</td><td>'+Math.round(iA).toLocaleString()+'원</td><td>'+Math.round(mA).toLocaleString()+'원</td><td style="color:var(--primary);font-weight:700;">'+Math.round(total).toLocaleString()+'원</td><td>'+Math.round(prin).toLocaleString()+'원</td><td style="color:#059669;">+'+Math.round(profit).toLocaleString()+'원</td>';
